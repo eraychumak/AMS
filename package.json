@@ -9,7 +9,7 @@
   },
   "repository": "https://github.com/eraychumak/AMS.git",
   "author": "Eray Chumak <eray_chumak@protonmail.com>",
-  "license": "Unlicensed",
+  "license": "UNLICENSED",
   "dependencies": {
     "json-server": "^0.17.3"
   }
