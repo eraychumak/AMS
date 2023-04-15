@@ -1,0 +1,64 @@
+<!-- TODO: Include modules and exit awards -->
+
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../globalStyles.css"/>
+    <title>AMS - Degree Programme</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="../">Home</a>
+      <p>></p>
+      <p class="useDegreeProgrammeName"></p>
+    </nav>
+    <main>
+      <h1>Degree Programme</br><span class="useDegreeProgrammeName"></span></h1>
+      <form>
+        <section class="formField">
+          <label for="name">Name</label>
+          <input
+            name="name"
+            class="useDegreeProgrammeName"
+            id="name"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <section class="formField">
+          <label for="learningOutcomes">Learning Outcomes</label>
+          <input
+            name="learningOutcomes"
+            id="learningOutcomes"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <fieldset>
+          <legend>Select modules</legend>
+          <section>
+            <input type="checkbox" id="moduleID" name="moduleID" checked>
+            <label for="moduleID">moduleName</label>
+          </section>
+        </fieldset>
+        <fieldset>
+          <legend>Select exit awards</legend>
+          <section>
+            <input type="checkbox" id="exitAwardID" name="exitAwardID" checked>
+            <label for="exitAwardID">exitAwardName</label>
+          </section>
+        </fieldset>
+        <input type="submit" value="Update degree programme details"/>
+      </form>
+      <a href="#" class="importantAction" id="delDegreeProgramme"></a>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>
