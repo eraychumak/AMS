@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../globalStyles.css"/>
+    <title>AMS - Academic Year</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="../">Home</a>
+      <p>></p>
+      <p class="useAcademicYear"></p>
+    </nav>
+    <main>
+      <h1>Academic Year</br><span class="useAcademicYear"></span></h1>
+      <form id="formUpdateAcademicYear">
+        <section class="formField">
+          <label for="name">Name</label>
+          <input
+            name="name"
+            class="useAcademicYear"
+            id="name"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <input type="submit" value="Update academic year details"/>
+      </form>
+      <a href="/" class="importantAction" id="delAcademicYear"></a>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>
