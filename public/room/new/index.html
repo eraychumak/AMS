@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../globalStyles.css"/>
+    <title>AMS - Create a new room</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="../">Home</a>
+      <p>></p>
+      <p>Create a new room</p>
+    </nav>
+    <main>
+      <h1>Create a new</br><span>Room</span></h1>
+      <form id="formNewRoom">
+        <section class="formField">
+          <label for="name">Name</label>
+          <input
+            name="name"
+            id="name"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <section class="formField">
+          <label for="location">Location</label>
+          <input
+            name="location"
+            id="location"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <input type="submit" value="Create new room"/>
+      </form>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>

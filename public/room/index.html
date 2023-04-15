@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../globalStyles.css"/>
+    <title>AMS - Room</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="../">Home</a>
+      <p>></p>
+      <p class="useRoomName"></p>
+    </nav>
+    <main>
+      <h1>Room</br><span class="useRoomName"></span></h1>
+      <form id="formUpdateRoom">
+        <section class="formField">
+          <label for="name">Name</label>
+          <input
+            name="name"
+            class="useRoomName"
+            id="name"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <section class="formField">
+          <label for="location">Location</label>
+          <input
+            name="location"
+            id="location"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <input type="submit" value="Update room details"/>
+      </form>
+      <a href="/" class="importantAction" id="delRoom"></a>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>
