@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../globalStyles.css"/>
+    <title>AMS - Academic</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="../">Home</a>
+      <p>></p>
+      <p class="useAcademicFullName"></p>
+    </nav>
+    <main>
+      <h1>Academic</br><span class="useAcademicFullName"></span></h1>
+      <form id="formUpdateAcademic">
+        <section class="formField">
+          <label for="fullName">Full Name</label>
+          <input
+            name="fullName"
+            class="useAcademicFullName"
+            id="fullName"
+            autocomplete="off"
+            required
+          />
+        </section>
+        <input type="submit" value="Update academic details"/>
+      </form>
+      <a href="/" class="importantAction" id="delAcademic"></a>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>
