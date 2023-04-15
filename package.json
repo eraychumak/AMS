@@ -1,0 +1,13 @@
+{
+  "name": "ams",
+  "displayName": "Academic Management System",
+  "scripts": {
+    "start": "json-server db.json --routes routes.json"
+  },
+  "repository": "https://github.com/eraychumak/AMS.git",
+  "author": "Eray Chumak <eray_chumak@protonmail.com>",
+  "license": "Unlicensed",
+  "dependencies": {
+    "json-server": "^0.17.3"
+  }
+}
