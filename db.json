@@ -1,0 +1,80 @@
+{
+  "exitAwards": [],
+  "degreeProgrammes": [
+    {
+      "id": 1,
+      "name": "Undergraduate",
+      "learningOutcomes": "LO1, LO2, LO3",
+      "moduleIDS": [
+        1
+      ],
+      "exitAwards": []
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "name": "Web Development",
+      "hours": 600,
+      "learningOutcomes": "LO1",
+      "assessmentIDs": [],
+      "credits": 60
+    }
+  ],
+  "assessments": [
+    {
+      "id": 1,
+      "title": "CW1",
+      "number": 2169,
+      "learningOutcomes": "LO1",
+      "volume": 30,
+      "weight": 0.2
+    },
+    {
+      "id": 2,
+      "title": "CW2",
+      "number": 2169,
+      "learningOutcomes": "LO2, LO3",
+      "volume": 30,
+      "weight": 0.8
+    }
+  ],
+  "academicYears": [
+    {
+      "name": "2022/23",
+      "id": 1
+    }
+  ],
+  "submissionDates": [
+    {
+      "id": 1,
+      "name": "CW2 SEM2 Deadline",
+      "academicYearID": 1,
+      "deadline": "2023-05-05T12:00:00.000Z"
+    }
+  ],
+  "academics": [
+    {
+      "fullName": "John Doe",
+      "id": 1
+    }
+  ],
+  "rooms": [
+    {
+      "name": "THF01",
+      "location": "Tech Hub - Floor 1 - Room 01",
+      "id": 3
+    }
+  ],
+  "timeslots": [
+    {
+      "id": 1,
+      "academicID": 1,
+      "timeStart": "09:00",
+      "timeEnd": "12:00",
+      "roomID": 1,
+      "academicYearID": 1,
+      "moduleID": 1
+    }
+  ]
+}
