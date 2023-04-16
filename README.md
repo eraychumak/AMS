@@ -9,7 +9,7 @@ The project was setup using the yarn package manager.
 
 ### Prerequisites
 You will need the following before starting:
-- `Node` _(>=v18.0.0)_
+- `Node` _(>v18.0.0)_
 - `Yarn` package manager
 
 ### Steps
