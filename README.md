@@ -7,5 +7,13 @@ This fork is an extension implementation part of coursework two for the CIS2169 
 ## Running the system (setup)
 The project was setup using the yarn package manager.
 
-1. Run `yarn` to install dependencies.
-2. Run `yarn run start` to run the server and use the system.
+### Prerequisites
+You will need the following before starting:
+- `Node` _(>=v18.0.0)_
+- `Yarn` package manager
+
+### Steps
+1. Git clone the repository.
+2. Go into the project root folder.
+3. Run `yarn` to install dependencies.
+4. Run `yarn run start` to run the server and use the system.
