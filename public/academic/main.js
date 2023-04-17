@@ -84,7 +84,7 @@ window.addEventListener("load", async () => {
         window.location.reload();
       } catch (err) {
         e.preventDefault();
-        alert("Failed to delete academic.");
+        alert("Failed to update academic.");
       }
     });
   } catch (e) {
