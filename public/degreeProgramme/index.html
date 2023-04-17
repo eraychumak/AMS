@@ -1,5 +1,3 @@
-<!-- TODO: Include modules and exit awards -->
-
 <!DOCTYPE html>
 
 <html lang="en-UK">
@@ -21,44 +19,54 @@
     </nav>
     <main>
       <h1>Degree Programme</br><span class="useDegreeProgrammeName"></span></h1>
-      <form>
-        <section class="formField">
-          <label for="name">Name</label>
-          <input
-            name="name"
-            class="useDegreeProgrammeName"
-            id="name"
-            autocomplete="off"
-            required
-          />
-        </section>
-        <section class="formField">
-          <label for="learningOutcomes">Learning Outcomes</label>
-          <input
-            name="learningOutcomes"
-            id="learningOutcomes"
-            autocomplete="off"
-            required
-          />
-        </section>
-        <fieldset>
-          <legend>Select modules</legend>
-          <section>
-            <input type="checkbox" id="moduleID" name="moduleID" checked>
-            <label for="moduleID">moduleName</label>
+      <article>
+        <form id="formUpdateDegreeProgramme">
+          <section class="formField">
+            <label for="name">Name</label>
+            <input
+              name="name"
+              class="useDegreeProgrammeName"
+              id="name"
+              autocomplete="off"
+              required
+            />
           </section>
-        </fieldset>
-        <fieldset>
-          <legend>Select exit awards</legend>
-          <section>
-            <input type="checkbox" id="exitAwardID" name="exitAwardID" checked>
-            <label for="exitAwardID">exitAwardName</label>
+          <section class="formField">
+            <label for="learningOutcomes">Learning Outcomes</label>
+            <input
+              name="learningOutcomes"
+              id="learningOutcomes"
+              autocomplete="off"
+              required
+            />
           </section>
-        </fieldset>
-        <input type="submit" value="Update degree programme details"/>
-      </form>
+          <fieldset>
+            <legend>Select modules</legend>
+            <section id="modulesList"></section>
+          </fieldset>
+          <fieldset>
+            <legend>Select exit awards</legend>
+            <section id="exitAwardsList"></section>
+          </fieldset>
+          <input type="submit" value="Update degree programme details"/>
+        </form>
+      </article>
+      <article>
+        <h2>Modules</h2>
+        <a href="#" id="createNewModule">Create a new module</a>
+        <nav class="pageActions" id="degreeProgrammeModulesList">
+
+        </nav>
+      </article>
+      <article>
+        <h2>Exit Awards</h2>
+        <a href="#" id="createNewExitAward">Create a new exit award</a>
+        <nav class="pageActions" id="degreeProgrammeExitAwardsList">
+        </nav>
+      </article>
       <a href="#" class="importantAction" id="delDegreeProgramme"></a>
     </main>
+    <script src="../lib.js" async></script>
     <script src="./main.js" async></script>
   </body>
 </html>
