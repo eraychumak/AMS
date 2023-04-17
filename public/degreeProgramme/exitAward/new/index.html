@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../globalStyles.css"/>
+    <title>AMS - Create a new exit award</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="/">Home</a>
+      <p>></p>
+      <a href="#" id="degreeProgrammeBreadCrumb"></a>
+      <p>></p>
+      <p>Create a new exit award</p>
+    </nav>
+    <main>
+      <h1>Create a new</br><span>Exit Award</span></h1>
+      <article>
+        <form id="formNewExitAward">
+          <section class="formField">
+            <label for="name">Name</label>
+            <input
+              name="name"
+              class="useModuleName"
+              id="name"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <input type="submit" value="Create new exit award"/>
+        </form>
+      </article>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>

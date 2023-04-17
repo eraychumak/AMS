@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../globalStyles.css"/>
+    <link rel="stylesheet" href="./style.css"/>
+    <title>AMS - Exit Award</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="../../">Home</a>
+      <p>></p>
+      <a href="#" id="degreeProgrammeBreadCrumb"></a>
+      <p>></p>
+      <p class="useExitAwardName"></p>
+    </nav>
+    <main>
+      <h1>Exit Award</br><span class="useExitAwardName"></span></h1>
+      <article>
+        <form id="formUpdateExitAward">
+          <section class="formField">
+            <label for="name">Name</label>
+            <input
+              name="name"
+              class="useExitAwardName"
+              id="name"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <input type="submit" value="Update exit award details"/>
+        </form>
+      </article>
+      <a href="#" class="importantAction" id="delExitAward"></a>
+    </main>
+    <script src="../../lib.js" async></script>
+    <script src="./main.js" async></script>
+  </body>
+</html>
