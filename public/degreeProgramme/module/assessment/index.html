@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../globalStyles.css"/>
+    <title>AMS - Assessment</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="../../">Home</a>
+      <p>></p>
+      <a href="#" id="degreeProgrammeBreadCrumb"></a>
+      <p>></p>
+      <a href="#" id="moduleBreadCrumb"></a>
+      <p>></p>
+      <p class="useAssessmentTitle"></p>
+    </nav>
+    <main>
+      <h1>Assessment</br><span class="useAssessmentTitle"></span></h1>
+      <article>
+        <form id="formUpdateAssessment">
+          <section class="formField">
+            <label for="name">Title</label>
+            <input
+              name="title"
+              class="useAssessmentTitle"
+              id="title"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="learningOutcomes">Learning Outcomes</label>
+            <input
+              name="learningOutcomes"
+              id="learningOutcomes"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="weight">Weight (%)</label>
+            <input
+              name="weight"
+              id="weight"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="weight">Number</label>
+            <input
+              name="number"
+              id="number"
+              autocomplete="off"
+              required
+              />
+            </section>
+            <section class="formField">
+              <label for="volume">Volume (hours)</label>
+              <input
+              name="volume"
+              id="volume"
+              autocomplete="off"
+              required
+              />
+            </section>
+            <fieldset>
+              <legend>Select submission dates per academic year</legend>
+              <section id="academicYearsList"></section>
+            </fieldset>
+          <input type="submit" value="Update assessment details"/>
+        </form>
+      </article>
+      <article>
+        <h2>Submission Dates</h2>
+        <a href="#" id="createNewSubmissionDate">Create a new submission date</a>
+        <nav class="pageActions" id="assessmentSubmissionDatesList"></nav>
+      </article>
+      <a href="#" class="importantAction" id="delAssessment"></a>
+    </main>
+    <script src="../../../lib.js" async></script>
+    <script src="./main.js" async></script>
+  </body>
+</html>

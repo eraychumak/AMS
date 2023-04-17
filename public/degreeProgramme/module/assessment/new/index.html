@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../globalStyles.css"/>
+    <title>AMS - Create a new assessment</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="/">Home</a>
+      <p>></p>
+      <a href="#" id="degreeProgrammeBreadCrumb"></a>
+      <p>></p>
+      <a href="#" id="moduleBreadCrumb"></a>
+      <p>></p>
+      <p>Create a new assessment</p>
+    </nav>
+    <main>
+      <h1>Create a new</br><span>Assessment</span></h1>
+      <article>
+        <form id="formNewAssessment">
+          <section class="formField">
+            <label for="title">Title</label>
+            <input
+              name="title"
+              id="title"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="learningOutcomes">Learning Outcomes</label>
+            <input
+              name="learningOutcomes"
+              id="learningOutcomes"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="weight">Weight (%)</label>
+            <input
+              name="weight"
+              id="weight"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="weight">Number</label>
+            <input
+              name="number"
+              id="number"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="volume">Volume (hours)</label>
+            <input
+              name="volume"
+              id="volume"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <input type="submit" value="Create new assessment"/>
+        </form>
+      </article>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>
