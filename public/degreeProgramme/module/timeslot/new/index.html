@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../../globalStyles.css"/>
+    <title>AMS - Create a new timeslot</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="/">Home</a>
+      <p>></p>
+      <a href="#" id="degreeProgrammeBreadCrumb"></a>
+      <p>></p>
+      <a href="#" id="moduleBreadCrumb"></a>
+      <p>></p>
+      <p>Create a new timeslot</p>
+    </nav>
+    <main>
+      <h1>Create a new</br><span>Timeslot</span></h1>
+      <article>
+        <form id="formNewTimeslot">
+          <section class="formField">
+            <label for="timeStart">Start Time</label>
+            <input
+              type="time"
+              name="timeStart"
+              step="60"
+              id="timeStart"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="timeEnd">End  Time</label>
+            <input
+              type="time"
+              step="60"
+              name="timeEnd"
+              id="timeEnd"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="days">Select day</label>
+            <select name="days" id="daysList">
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </section>
+          <section class="formField">
+            <label for="academicYear">Select academic year</label>
+            <select name="academicYear" id="academicYearsList"></select>
+          </section>
+          <section class="formField">
+            <label for="room">Select room</label>
+            <select name="room" id="roomsList"></select>
+          </section>
+          <section class="formField">
+            <label for="academic">Select academic</label>
+            <select name="academic" id="academicsList"></select>
+          </section>
+          <input type="submit" value="Create new timeslot"/>
+        </form>
+      </article>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>
