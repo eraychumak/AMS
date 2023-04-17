@@ -9,6 +9,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-weight: normal;
 }
 
 html, body {
@@ -44,6 +45,12 @@ nav.breadcrumbs {
 nav.breadcrumbs nav a,
 nav.breadcrumbs nav p {
   flex-shrink: 0;
+}
+
+nav.pageActions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
 }
 
 form {
