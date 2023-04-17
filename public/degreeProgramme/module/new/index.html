@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en-UK">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../../globalStyles.css"/>
+    <title>AMS - Create a new module</title>
+  </head>
+  <body>
+    <header>
+      <p>AMS</p>
+      <p>Academic Management System</p>
+    </header>
+    <nav class="breadcrumbs">
+      <a href="/">Home</a>
+      <p>></p>
+      <a href="#" id="degreeProgrammeBreadCrumb"></a>
+      <p>></p>
+      <p>Create a new module</p>
+    </nav>
+    <main>
+      <h1>Create a new</br><span>Module</span></h1>
+      <article>
+        <form id="formNewModule">
+          <section class="formField">
+            <label for="name">Name</label>
+            <input
+              name="name"
+              class="useModuleName"
+              id="name"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="credits">Credits</label>
+            <input
+              name="credits"
+              id="credits"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="hours">Hours</label>
+            <input
+              name="hours"
+              id="hours"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <section class="formField">
+            <label for="learningOutcomes">Learning Outcomes</label>
+            <input
+              name="learningOutcomes"
+              id="learningOutcomes"
+              autocomplete="off"
+              required
+            />
+          </section>
+          <fieldset>
+            <legend>Select assessments</legend>
+            <section id="assessmentsList"></section>
+          </fieldset>
+          <input type="submit" value="Create new module"/>
+        </form>
+      </article>
+    </main>
+    <script src="./main.js" async></script>
+  </body>
+</html>
