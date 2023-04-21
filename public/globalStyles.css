@@ -35,6 +35,20 @@ html, body {
 body {
   font-family: "Roboto Regular";
 }
+
+body > header {
+  background: #000;
+  color: #fff;
+  padding: 1rem 2rem;
+}
+
+body > header p.logoAcronym {
+  font-family: "Roboto Bold";
+}
+
+body > header p.logo {
+  font-family: "Roboto Condensed Italic";
+}
 a {
   color: blue;
   text-decoration: none;
