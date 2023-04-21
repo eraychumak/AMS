@@ -63,20 +63,24 @@
           </section>
           <fieldset>
             <legend>Select module assessments (<span id="totalAssessmentWeight"></span>)</legend>
-            <section id="assessmentsList"></section>
+            <section class="checkboxes" id="assessmentsList"></section>
           </fieldset>
           <input type="submit" value="Update module details"/>
         </form>
       </article>
       <article>
-        <h2>Assessments</h2>
-        <a href="#" id="createNewAssessment">Create a new assessment</a>
+        <header>
+          <h2>Assessments</h2>
+          <a href="#" id="createNewAssessment">Create a new assessment</a>
+        </header>
         <nav class="pageActions" id="moduleAssessmentsList"></nav>
       </article>
       <article class="schedule">
-        <h2>Schedule</h2>
-        <a href="#" id="createNewTimeslot">Create a new timeslot</a>
-        <nav class="pageActions" id="moduleTimeslotList"></nav>
+        <header>
+          <h2>Schedule</h2>
+          <a href="#" id="createNewTimeslot">Create a new timeslot</a>
+        </header>
+        <nav id="moduleTimeslotList"></nav>
       </article>
       <a href="#" class="importantAction" id="delModule"></a>
     </main>

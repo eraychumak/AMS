@@ -57,11 +57,13 @@ async function fetchAssessments() {
       const htmlLabel = document.createElement("label");
       const htmlLabelText = document.createTextNode(`CIS${assessment.number} - ${assessment.title}`);
 
+      htmlDiv.classList.add("checkboxField");
+
       htmlInput.type = "checkbox";
       htmlInput.id = assessment.id;
       htmlInput.name = assessment.id;
 
-      htmlLabel.for = assessment.id;
+      htmlLabel.htmlFor = assessment.id;
       htmlLabel.appendChild(htmlLabelText);
 
       htmlDiv.appendChild(htmlInput);

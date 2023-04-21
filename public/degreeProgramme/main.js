@@ -43,12 +43,14 @@ async function fetchExitAwards(degreeProgrammeExitAwardIDs) {
       const htmlLabel = document.createElement("label");
       const htmlLabelText = document.createTextNode(exitAward.name);
 
+      htmlDiv.classList.add("checkboxField");
+
       htmlInput.type = "checkbox";
       htmlInput.id = exitAward.id;
       htmlInput.name = exitAward.id;
       htmlInput.checked = degreeProgrammeExitAwardIDs.includes(exitAward.id);
 
-      htmlLabel.for = exitAward.id;
+      htmlLabel.htmlFor = exitAward.id;
       htmlLabel.appendChild(htmlLabelText);
 
       htmlDiv.appendChild(htmlInput);
@@ -148,6 +150,8 @@ window.addEventListener("load", async () => {
         const htmlLabel = document.createElement("label");
         const htmlLabelText = document.createTextNode(mod.name);
 
+        htmlDiv.classList.add("checkboxField");
+
         htmlInput.type = "checkbox";
         htmlInput.id = mod.id;
         htmlInput.name = mod.id;
@@ -158,7 +162,7 @@ window.addEventListener("load", async () => {
           htmlDegreeProgrammeModulesList.appendChild(html);
         }
 
-        htmlLabel.for = mod.id;
+        htmlLabel.htmlFor = mod.id;
         htmlLabel.appendChild(htmlLabelText);
 
         htmlDiv.appendChild(htmlInput);
