@@ -5,30 +5,53 @@
       "id": 1,
       "name": "Undergraduate",
       "learningOutcomes": "LO1, LO2, LO3",
-      "moduleIDS": [
-        1
+      "moduleIDs": [
+        1,
+        2
       ],
-      "exitAwards": []
+      "exitAwardIDs": []
     }
   ],
   "modules": [
     {
       "id": 1,
-      "name": "Web Development",
+      "name": "Web Application Development",
       "hours": 600,
       "learningOutcomes": "LO1",
-      "assessmentIDs": [],
-      "credits": 60
+      "credits": 60,
+      "assessmentIDs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "name": "Server & Client Side Scripting",
+      "credits": 60,
+      "hours": 600,
+      "learningOutcomes": "LO1, LO2, LO3",
+      "assessmentIDs": [
+        2,
+        3
+      ],
+      "id": 2
     }
   ],
   "assessments": [
     {
       "id": 1,
-      "title": "CW1",
+      "title": "Task 01",
       "number": 2169,
       "learningOutcomes": "LO1",
       "volume": 30,
-      "weight": 0.2
+      "weight": 0.04,
+      "submissionDateIDs": [
+        1,
+        4
+      ]
     },
     {
       "id": 2,
@@ -36,21 +59,122 @@
       "number": 2169,
       "learningOutcomes": "LO2, LO3",
       "volume": 30,
-      "weight": 0.8
+      "weight": 0.8,
+      "submissionDateIDs": [
+        3,
+        6
+      ]
+    },
+    {
+      "title": "Task 03",
+      "learningOutcomes": "LO1",
+      "weight": 0.04,
+      "number": 2169,
+      "volume": 20,
+      "submissionDateIDs": [
+        7
+      ],
+      "id": 3
+    },
+    {
+      "title": "Task 04",
+      "learningOutcomes": "LO1",
+      "weight": 0.04,
+      "number": 2169,
+      "volume": 20,
+      "submissionDateIDs": [
+        8
+      ],
+      "id": 4
+    },
+    {
+      "title": "Task 02",
+      "learningOutcomes": "LO1",
+      "weight": 0.04,
+      "number": 2169,
+      "volume": 30,
+      "submissionDateIDs": [
+        2,
+        5
+      ],
+      "id": 5
+    },
+    {
+      "title": "Task 05",
+      "learningOutcomes": "LO1",
+      "weight": 0.04,
+      "number": 2169,
+      "volume": 30,
+      "submissionDateIDs": [
+        9
+      ],
+      "id": 6
     }
   ],
   "academicYears": [
     {
+      "name": "2021/22",
+      "id": 2
+    },
+    {
       "name": "2022/23",
-      "id": 1
+      "id": 3
     }
   ],
   "submissionDates": [
     {
       "id": 1,
-      "name": "CW2 SEM2 Deadline",
+      "name": "CW1 - Task 01 - Deadline",
+      "academicYearID": 1,
+      "deadline": "2023-01-30T12:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "CW1 - Task 02 - Deadline",
+      "academicYearID": 1,
+      "deadline": "2023-01-31T12:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "CW2 - Deadline",
       "academicYearID": 1,
       "deadline": "2023-05-05T12:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "CW1 - Task 01 - Deadline",
+      "academicYearID": 2,
+      "deadline": "2022-01-30T12:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "CW1 - Task 02 - Deadline",
+      "academicYearID": 2,
+      "deadline": "2022-01-31T12:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "CW2 - Deadline",
+      "academicYearID": 2,
+      "deadline": "2022-05-05T12:00:00.000Z"
+    },
+    {
+      "name": "CW1 - Task 03 - Deadline",
+      "deadline": "2023-02-13T00:00:00.000Z",
+      "academicYearID": "1",
+      "id": 7
+    },
+    {
+      "name": "CW1 - Task 04 - Deadline",
+      "deadline": "2023-03-07T00:00:00.000Z",
+      "academicYearID": "1",
+      "id": 8
+    },
+    {
+      "name": "CW1 - Task 05 - Deadline",
+      "deadline": "2023-03-20T00:00:00.000Z",
+      "academicYearID": "1",
+      "id": 9
     }
   ],
   "academics": [
@@ -61,20 +185,41 @@
   ],
   "rooms": [
     {
-      "name": "THF01",
-      "location": "Tech Hub - Floor 1 - Room 01",
-      "id": 3
+      "name": "THF09",
+      "location": "Tech Hub - Floor 1 - Room 09",
+      "id": 1
     }
   ],
   "timeslots": [
     {
       "id": 1,
       "academicID": 1,
+      "day": "Tuesday",
       "timeStart": "09:00",
       "timeEnd": "12:00",
       "roomID": 1,
       "academicYearID": 1,
       "moduleID": 1
+    },
+    {
+      "timeStart": "09:00:00",
+      "timeEnd": "12:00:00",
+      "day": "Thursday",
+      "academicYearID": 1,
+      "roomID": 1,
+      "academicID": 1,
+      "moduleID": "2",
+      "id": 2
+    },
+    {
+      "timeStart": "09:00",
+      "timeEnd": "12:00",
+      "day": "Tuesday",
+      "academicYearID": 3,
+      "roomID": 1,
+      "academicID": 1,
+      "moduleID": "1",
+      "id": 3
     }
   ]
 }
