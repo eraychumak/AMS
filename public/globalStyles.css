@@ -65,6 +65,12 @@ nav.breadcrumbs nav p {
   flex-shrink: 0;
 }
 
+nav.pageActions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
 a {
   color: blue;
   text-decoration: none;
@@ -72,6 +78,22 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+main {
+  padding: 2rem;
+}
+
+main h1:has(span) {
+  font-family: "Roboto Regular";
+}
+
+main h1 span {
+  font-family: "Roboto Bold";
+}
+
+h1, h2 {
+  font-family: "Roboto Bold";
 }
 
 .secondaryBtn {
@@ -83,22 +105,17 @@ a:hover {
   padding: 1rem;
 }
 
-nav.breadcrumbs {
-  display: flex;
-  gap: .5rem;
-  width: 100%;
-  overflow: auto;
+article {
+  margin: 2rem 0;
 }
 
-nav.breadcrumbs nav a,
-nav.breadcrumbs nav p {
-  flex-shrink: 0;
+article header h2 {
+  margin-bottom: 5px;
 }
 
-nav.pageActions {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
+article header {
+  margin-bottom: 1rem;
+}
 }
 
 form {
