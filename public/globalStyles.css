@@ -126,5 +126,7 @@ input[type="submit"]:hover {
 }
 
 .importantAction {
+  display: block;
+  margin-top: 3rem;
   color: red;
 }
