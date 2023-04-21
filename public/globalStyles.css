@@ -179,3 +179,17 @@ input[type="submit"]:hover {
   margin-top: 3rem;
   color: red;
 }
+
+@media only screen and (min-width: 1000px) {
+  body > header {
+    padding: 1rem 25vw;
+  }
+
+  nav.breadcrumbs {
+    padding: 1rem 25vw;
+  }
+
+  main {
+    padding: 2rem 25vw;
+  }
+}
