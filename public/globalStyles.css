@@ -37,9 +37,21 @@ body {
 }
 
 body > header {
+  position: relative;
   background: #000;
   color: #fff;
   padding: 1rem 2rem;
+}
+
+body > header::after {
+  content: "";
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  background: var(--accent);
+  width: calc(100% - 4rem);
+  height: 10px;
 }
 
 body > header p.logoAcronym {
@@ -55,6 +67,7 @@ nav.breadcrumbs {
   gap: .5rem;
   width: 100%;
   overflow: auto;
+  margin-top: calc(1rem + 10px);
   padding: 1rem 2rem;
   overflow: auto;
   white-space: nowrap;
@@ -183,6 +196,11 @@ input[type="submit"]:hover {
 @media only screen and (min-width: 1000px) {
   body > header {
     padding: 1rem 25vw;
+  }
+
+  body > header::after {
+    width: calc(100% - 50vw);
+    height: 10px;
   }
 
   nav.breadcrumbs {
