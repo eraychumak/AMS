@@ -5,6 +5,21 @@
   --txt: #000;
 }
 
+@font-face {
+  font-family: "Roboto Regular";
+  src: url(./assets/fonts/roboto_regular.ttf);
+}
+
+@font-face {
+  font-family: "Roboto Bold";
+  src: url(./assets/fonts/roboto_bold.ttf);
+}
+
+@font-face {
+  font-family: "Roboto Condensed Italic";
+  src: url(./assets/fonts/roboto_condensed_italic.ttf);
+}
+
 * {
   margin: 0;
   padding: 0;
