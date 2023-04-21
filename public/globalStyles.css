@@ -49,6 +49,22 @@ body > header p.logoAcronym {
 body > header p.logo {
   font-family: "Roboto Condensed Italic";
 }
+
+nav.breadcrumbs {
+  display: flex;
+  gap: .5rem;
+  width: 100%;
+  overflow: auto;
+  padding: 1rem 2rem;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+nav.breadcrumbs nav a,
+nav.breadcrumbs nav p {
+  flex-shrink: 0;
+}
+
 a {
   color: blue;
   text-decoration: none;
