@@ -32,6 +32,9 @@ html, body {
   width: 100%;
 }
 
+body {
+  font-family: "Roboto Regular";
+}
 a {
   color: blue;
   text-decoration: none;
