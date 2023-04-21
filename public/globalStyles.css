@@ -5,6 +5,21 @@
   --txt: #000;
 }
 
+@font-face {
+  font-family: "Roboto Regular";
+  src: url(./assets/fonts/roboto_regular.ttf);
+}
+
+@font-face {
+  font-family: "Roboto Bold";
+  src: url(./assets/fonts/roboto_bold.ttf);
+}
+
+@font-face {
+  font-family: "Roboto Condensed Italic";
+  src: url(./assets/fonts/roboto_condensed_italic.ttf);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,22 +32,34 @@ html, body {
   width: 100%;
 }
 
-a {
-  color: blue;
-  text-decoration: none;
+body {
+  font-family: "Roboto Regular";
 }
 
-a:hover {
-  text-decoration: underline;
+body > header {
+  position: relative;
+  background: #000;
+  color: #fff;
+  padding: 1rem 2rem;
 }
 
-.secondaryBtn {
-  display: block;
-  text-align: center;
-  background: var(--secondary);
-  color: var(--txt);
-  text-decoration: none;
-  padding: 1rem;
+body > header::after {
+  content: "";
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  background: var(--accent);
+  width: calc(100% - 4rem);
+  height: 10px;
+}
+
+body > header p.logoAcronym {
+  font-family: "Roboto Bold";
+}
+
+body > header p.logo {
+  font-family: "Roboto Condensed Italic";
 }
 
 nav.breadcrumbs {
@@ -40,6 +67,10 @@ nav.breadcrumbs {
   gap: .5rem;
   width: 100%;
   overflow: auto;
+  margin-top: calc(1rem + 10px);
+  padding: 1rem 2rem;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 nav.breadcrumbs nav a,
@@ -53,7 +84,64 @@ nav.pageActions {
   flex-direction: column;
 }
 
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 2rem;
+}
+
+main h1:has(span) {
+  font-family: "Roboto Regular";
+}
+
+main h1 span {
+  font-family: "Roboto Bold";
+}
+
+h1, h2 {
+  font-family: "Roboto Bold";
+}
+
+.secondaryBtn {
+  display: block;
+  text-align: center;
+  background: var(--secondary);
+  color: var(--txt);
+  text-decoration: none;
+  padding: 1rem;
+}
+
+article {
+  margin: 2rem 0;
+}
+
+article header h2 {
+  margin-bottom: 5px;
+}
+
+article header {
+  margin-bottom: 1rem;
+}
+
+form input {
+  padding: .5rem;
+  font-size: 1rem;
+}
+
+form select {
+  padding: .5rem;
+  font-size: 1rem;
+}
+
 form {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -65,11 +153,33 @@ form {
   gap: .5rem;
 }
 
+fieldset {
+  padding: 1rem;
+}
+
+fieldset legend {
+  background: #fff;
+  padding: 0 .5rem;
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
 input[type="submit"] {
   border: none;
   background: var(--accent);
   color: var(--accentTxt);
   padding: 1rem;
+  font-family: "Roboto Bold";
 }
 
 input[type="submit"]:hover {
@@ -78,5 +188,26 @@ input[type="submit"]:hover {
 }
 
 .importantAction {
+  display: block;
+  margin-top: 3rem;
   color: red;
+}
+
+@media only screen and (min-width: 1000px) {
+  body > header {
+    padding: 1rem 25vw;
+  }
+
+  body > header::after {
+    width: calc(100% - 50vw);
+    height: 10px;
+  }
+
+  nav.breadcrumbs {
+    padding: 1rem 25vw;
+  }
+
+  main {
+    padding: 2rem 25vw;
+  }
 }

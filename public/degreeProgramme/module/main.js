@@ -49,7 +49,7 @@ async function fetchAllAssessments(moduleAssessmentIDs) {
     const htmlTotalAssessmentWeight = document.getElementById("totalAssessmentWeight");
     htmlTotalAssessmentWeight.innerText = totalAssessmentWeights[0];
 
-    if (totalAssessmentWeights[1] >= 1) {
+    if (Math.round(totalAssessmentWeights[1]) > 1) {
       const htmlCreateNewAssessment = document.getElementById("createNewAssessment");
       htmlCreateNewAssessment.href = "#";
       htmlCreateNewAssessment.onclick = (e) => {
@@ -65,13 +65,15 @@ async function fetchAllAssessments(moduleAssessmentIDs) {
       const htmlLabel = document.createElement("label");
       const htmlLabelText = document.createTextNode(`CIS${assessment.number} - ${assessment.title} - ${wPercent(assessment.weight)}`);
 
+      htmlDiv.classList.add("checkboxField");
+
       htmlInput.type = "checkbox";
       htmlInput.id = assessment.id;
       htmlInput.dataset.assessementWeight = assessment.weight;
       htmlInput.name = assessment.id;
       htmlInput.checked = moduleAssessmentIDs.includes(assessment.id);
 
-      htmlLabel.for = assessment.id;
+      htmlLabel.htmlFor = assessment.id;
       htmlLabel.appendChild(htmlLabelText);
 
       htmlDiv.appendChild(htmlInput);
@@ -201,54 +203,84 @@ async function fetchTimeslots() {
       const htmlDiv = document.createElement("div");
       htmlDiv.classList.add("timeslot");
 
-      const htmlPAcademicYear = document.createElement("p");
+      const htmlPAcademicYear = document.createElement("h3");
       const htmlTxtAcademicYear = document.createTextNode("Academic Year");
       htmlPAcademicYear.appendChild(htmlTxtAcademicYear);
       const htmlPAcademicYearValue = document.createElement("p");
       const htmlTxtAcademicYearValue = document.createTextNode(academicYear.name);
       htmlPAcademicYearValue.appendChild(htmlTxtAcademicYearValue);
 
-      const htmlPModule = document.createElement("p");
+      const htmlPModule = document.createElement("h3");
       const htmlTxtModule = document.createTextNode("Module");
       htmlPModule.appendChild(htmlTxtModule);
       const htmlPModuleValue = document.createElement("p");
       const htmlTxtModuleValue = document.createTextNode(mod.name);
       htmlPModuleValue.appendChild(htmlTxtModuleValue);
 
-      const htmlPAcademic = document.createElement("p");
+      const htmlPAcademic = document.createElement("h3");
       const htmlTxtAcademic = document.createTextNode("Academic");
       htmlPAcademic.appendChild(htmlTxtAcademic);
       const htmlPAcademicValue = document.createElement("p");
       const htmlTxtAcademicValue = document.createTextNode(academic.fullName);
       htmlPAcademicValue.appendChild(htmlTxtAcademicValue);
 
-      const htmlPRoom = document.createElement("p");
+      const htmlRoomContainer = document.createElement("div");
+      htmlRoomContainer.classList.add("roomContainer");
+
+      const htmlPRoom = document.createElement("h3");
       const htmlTxtRoom = document.createTextNode("Room");
       htmlPRoom.appendChild(htmlTxtRoom);
       const htmlPRoomValue = document.createElement("p");
       const htmlTxtRoomValue = document.createTextNode(room.name);
       htmlPRoomValue.appendChild(htmlTxtRoomValue);
 
-      const htmlPDay = document.createElement("p");
+      htmlRoomContainer.appendChild(htmlPRoom);
+      htmlRoomContainer.appendChild(htmlPRoomValue);
+
+      const htmlDayContainer = document.createElement("div");
+      htmlDayContainer.classList.add("dayContainer");
+
+      const htmlPDay = document.createElement("h3");
       const htmlTxtDay = document.createTextNode("Day");
       htmlPDay.appendChild(htmlTxtDay);
       const htmlPDayValue = document.createElement("p");
       const htmlTxtDayValue = document.createTextNode(timeslot.day);
       htmlPDayValue.appendChild(htmlTxtDayValue);
 
-      const htmlPTimeStart = document.createElement("p");
-      const htmlTxtTimeStart = document.createTextNode("TimeStart");
+      htmlDayContainer.appendChild(htmlPDay);
+      htmlDayContainer.appendChild(htmlPDayValue);
+
+      const htmlTimeContainer = document.createElement("div");
+      htmlTimeContainer.classList.add("timeContainer");
+
+      const htmlTimeStartContainer = document.createElement("div");
+      htmlTimeStartContainer.classList.add("timeStartContainer");
+
+      const htmlPTimeStart = document.createElement("h3");
+      const htmlTxtTimeStart = document.createTextNode("Start");
       htmlPTimeStart.appendChild(htmlTxtTimeStart);
       const htmlPTimeStartValue = document.createElement("p");
       const htmlTxtTimeStartValue = document.createTextNode(timeslot.timeStart);
       htmlPTimeStartValue.appendChild(htmlTxtTimeStartValue);
 
-      const htmlPTimeEnd = document.createElement("p");
-      const htmlTxtTimeEnd = document.createTextNode("TimeEnd");
+      htmlTimeStartContainer.appendChild(htmlPTimeStart);
+      htmlTimeStartContainer.appendChild(htmlPTimeStartValue);
+
+      const htmlTimeEndContainer = document.createElement("div");
+      htmlTimeEndContainer.classList.add("timeEndContainer");
+
+      const htmlPTimeEnd = document.createElement("h3");
+      const htmlTxtTimeEnd = document.createTextNode("End");
       htmlPTimeEnd.appendChild(htmlTxtTimeEnd);
       const htmlPTimeEndValue = document.createElement("p");
       const htmlTxtTimeEndValue = document.createTextNode(timeslot.timeEnd);
       htmlPTimeEndValue.appendChild(htmlTxtTimeEndValue);
+
+      htmlTimeEndContainer.appendChild(htmlPTimeEnd);
+      htmlTimeEndContainer.appendChild(htmlPTimeEndValue);
+
+      htmlTimeContainer.appendChild(htmlTimeStartContainer);
+      htmlTimeContainer.appendChild(htmlTimeEndContainer);
 
       const htmlA = document.createElement("a");
       const htmlATxt = document.createTextNode("View");
@@ -261,14 +293,9 @@ async function fetchTimeslots() {
       htmlDiv.appendChild(htmlPModuleValue);
       htmlDiv.appendChild(htmlPAcademic);
       htmlDiv.appendChild(htmlPAcademicValue);
-      htmlDiv.appendChild(htmlPRoom);
-      htmlDiv.appendChild(htmlPRoomValue);
-      htmlDiv.appendChild(htmlPDay);
-      htmlDiv.appendChild(htmlPDayValue);
-      htmlDiv.appendChild(htmlPTimeStart);
-      htmlDiv.appendChild(htmlPTimeStartValue);
-      htmlDiv.appendChild(htmlPTimeEnd);
-      htmlDiv.appendChild(htmlPTimeEndValue);
+      htmlDiv.appendChild(htmlRoomContainer);
+      htmlDiv.appendChild(htmlDayContainer);
+      htmlDiv.appendChild(htmlTimeContainer);
       htmlDiv.appendChild(htmlA);
 
       htmlModuleTimeslotList.appendChild(htmlDiv);
@@ -430,7 +457,7 @@ window.addEventListener("load", async () => {
         }
       });
 
-      if (totalWeight > 1) {
+      if (Math.round(totalWeight) > 1) {
         alert("Assessment weight cannot be over 100%.");
         return;
       }

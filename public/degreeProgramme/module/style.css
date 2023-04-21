@@ -1,8 +1,51 @@
 .schedule {
-  padding: 1rem;
+  padding: 2rem;
   background: #fafafa;
 }
 
+nav#moduleTimeslotList {
+  display: grid;
+  gap: 1rem;
+}
+
 .timeslot {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  border: solid #aaa 1px;
+  width: 100%;
+  padding: 1rem;
   background: white;
+}
+
+.timeslot h3 {
+  font-size: 1rem;
+  font-family: "Roboto Bold";
+}
+
+.timeslot .roomContainer,
+.timeslot .dayContainer,
+.timeslot .timeContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timeslot .timeEndContainer {
+  text-align: right;
+}
+
+.timeslot a {
+  text-align: center;
+  font-family: "Roboto Bold";
+  display: block;
+  padding: .5rem;
+  width: 100%;
+  background: var(--accent);
+  color: var(--accentTxt);
+}
+
+@media only screen and (min-width: 600px) {
+  nav#moduleTimeslotList {
+    grid-template-columns: repeat(auto-fill, 300px);
+  }
 }
