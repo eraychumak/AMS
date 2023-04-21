@@ -4,6 +4,16 @@ This system is built with vanilla HTML, CSS, and JavaScript without any framewor
 
 This fork is an extension implementation part of coursework two for the CIS2169 - Web Application Development module at Edge Hill University.
 
+## Screenshots
+
+![Dell XPS 15 laptop mock of AMS](./screenshots/desktop.png "Desktop Mockup")
+
+<details>
+<summary>Mobile</summary>
+<br>
+<img src="./screenshots/mobile.png" alt="Google Pixel 4 XL - Mobile Phone mock of AMS">
+</details>
+
 ## Running the system (setup)
 The project was setup using the yarn package manager.
 
