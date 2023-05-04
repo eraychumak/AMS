@@ -19,7 +19,7 @@
     </nav>
     <main>
       <h1>Create a new</br><span>Degree Programme</span></h1>
-      <form>
+      <form id="formNewDegreeProgramme">
         <section class="formField">
           <label for="name">Name</label>
           <input
@@ -40,20 +40,15 @@
         </section>
         <fieldset>
           <legend>Select modules</legend>
-          <section>
-            <input type="checkbox" id="moduleID" name="moduleID" checked>
-            <label for="moduleID">moduleName</label>
-          </section>
+          <section class="checkboxes" id="modulesList"></section>
         </fieldset>
         <fieldset>
           <legend>Select exit awards</legend>
-          <section>
-            <input type="checkbox" id="exitAwardID" name="exitAwardID" checked>
-            <label for="exitAwardID">exitAwardName</label>
-          </section>
+          <section class="checkboxes" id="exitAwardsList"></section>
         </fieldset>
         <input type="submit" value="Create new degree programme"/>
       </form>
     </main>
+    <script src="./main.js"></script>
   </body>
 </html>
