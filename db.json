@@ -1,15 +1,21 @@
 {
-  "exitAwards": [],
+  "exitAwards": [
+    {
+      "name": "BSc Hons",
+      "id": 1
+    }
+  ],
   "degreeProgrammes": [
     {
       "id": 1,
       "name": "Undergraduate",
       "learningOutcomes": "LO1, LO2, LO3",
       "moduleIDs": [
-        1,
-        2
+        1
       ],
-      "exitAwardIDs": []
+      "exitAwardIDs": [
+        1
+      ]
     }
   ],
   "modules": [
@@ -27,17 +33,6 @@
         5,
         6
       ]
-    },
-    {
-      "name": "Server & Client Side Scripting",
-      "credits": 60,
-      "hours": 600,
-      "learningOutcomes": "LO1, LO2, LO3",
-      "assessmentIDs": [
-        2,
-        3
-      ],
-      "id": 2
     }
   ],
   "assessments": [
