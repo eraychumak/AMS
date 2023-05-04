@@ -105,10 +105,11 @@ window.addEventListener("load", async () => {
     htmlDelDegreeProgramme.innerText = `Delete '${degreeProgramme.name}' degree programme`;
 
     htmlDelDegreeProgramme.addEventListener("click", async (e) => {
+      e.preventDefault();
+
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The degree programme was not deleted because you did not enter the confirmation text correctly.");
         return;
       }
@@ -117,6 +118,8 @@ window.addEventListener("load", async () => {
         await fetch(`/api/degreeProgrammes/${degreeProgramme.id}`, {
           method: "DELETE"
         });
+
+        window.location.replace("/");
       } catch (err) {
         e.preventDefault();
         alert("Failed to delete degree programme.");

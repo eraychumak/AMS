@@ -147,10 +147,10 @@ window.addEventListener("load", async () => {
     htmlDelSubmissionDate.innerText = `Delete '${submissionDate.name}' submissionDate`;
 
     htmlDelSubmissionDate.addEventListener("click", async (e) => {
+      e.preventDefault();
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The submission date was not deleted because you did not enter the confirmation text correctly.");
         return;
       }
@@ -214,7 +214,7 @@ window.addEventListener("load", async () => {
     const deadline = new Date(document.getElementById("deadline").value).toISOString();
     const htmlAcademicYearsList = document.getElementById("academicYearsList");
 
-    const academicYearID = htmlAcademicYearsList.options[htmlAcademicYearsList.options.selectedIndex].value;;
+    const academicYearID = parseInt(htmlAcademicYearsList.options[htmlAcademicYearsList.options.selectedIndex].value);
 
     const updatedSubmissionDate = {
       name,

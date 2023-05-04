@@ -355,10 +355,10 @@ window.addEventListener("load", async () => {
     htmlDelModule.innerText = `Delete '${mod.name}' module`;
 
     htmlDelModule.addEventListener("click", async (e) => {
+      e.preventDefault();
       const msg = window.prompt("The following will also be deleted with the module:\n - Timeslots created for the module\n\nType 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The module was not deleted because you did not enter the confirmation text correctly.");
         return;
       }
@@ -396,6 +396,8 @@ window.addEventListener("load", async () => {
               },
               body: JSON.stringify(updatedDegreeProgramme)
             });
+
+            window.location.replace(`../id=${degreeProgramme.id}`);
           } catch (e) {
             console.log(e);
             // TODO

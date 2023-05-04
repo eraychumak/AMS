@@ -38,10 +38,10 @@ window.addEventListener("load", async () => {
     htmlDelAcademic.innerText = `Delete '${academic.fullName}' academic`;
 
     htmlDelAcademic.addEventListener("click", async (e) => {
+      e.preventDefault();
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The academic was not deleted because you did not enter the confirmation text correctly.");
         return;
       }
@@ -50,6 +50,8 @@ window.addEventListener("load", async () => {
         await fetch(`/api/academics/${academic.id}`, {
           method: "DELETE"
         });
+
+        window.location.replace("/");
       } catch (err) {
         e.preventDefault();
         alert("Failed to delete academic.");
