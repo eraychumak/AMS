@@ -38,18 +38,49 @@ window.addEventListener("load", async () => {
     htmlDelAcademic.innerText = `Delete '${academicYear.name}' academic year`;
 
     htmlDelAcademic.addEventListener("click", async (e) => {
+      e.preventDefault();
+
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The academic year was not deleted because you did not enter the confirmation text correctly.");
         return;
       }
 
       try {
-        await fetch(`/api/academicYears/${academicYear.id}`, {
+        const req = await fetch(`/api/academicYears/${academicYear.id}`, {
           method: "DELETE"
         });
+
+        if (req.status !== 200) {
+          return;
+        }
+
+        const reqTimeslots = await fetch(`/api/timeslots?academicYearID=${academicYear.id}`);
+
+        if (reqTimeslots.status !== 200) {
+          return;
+        }
+
+        const timeslots = await reqTimeslots.json();
+
+        timeslots.forEach(async (timeslot) => {
+          await fetch(`/api/timeslots/${timeslot.id}`, { method: "DELETE" });
+        });
+
+        const reqSubmissionDates = await fetch(`/api/submissionDates?academicYearID=${academicYear.id}`);
+
+        if (reqSubmissionDates.status !== 200) {
+          return;
+        }
+
+        const submissionDates = await reqSubmissionDates.json();
+
+        submissionDates.forEach(async (submissionDate) => {
+          await fetch(`/api/submissionDates/${submissionDate.id}`, { method: "DELETE" });
+        });
+
+        window.location.replace("/");
       } catch (err) {
         e.preventDefault();
         alert("Failed to delete academic year.");

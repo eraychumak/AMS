@@ -64,10 +64,10 @@ window.addEventListener("load", async () => {
     htmlDelExitAward.innerText = `Delete '${exitAward.name}' exit award`;
 
     htmlDelExitAward.addEventListener("click", async (e) => {
+      e.preventDefault();
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The exit award was not deleted because you did not enter the confirmation text correctly.");
         return;
       }

@@ -194,7 +194,7 @@ window.addEventListener("load", () => {
       academicYearID,
       roomID,
       academicID,
-      moduleID
+      moduleID: parseInt(moduleID)
     };
 
     try {

@@ -196,7 +196,7 @@ window.addEventListener("load", async () => {
     htmlLearningOutcomes.value = assessment.learningOutcomes;
 
     const htmlWeight = document.getElementById("weight");
-    htmlWeight.value = assessment.weight;
+    htmlWeight.value = assessment.weight * 100;
 
     const htmlNumber = document.getElementById("number");
     htmlNumber.value = assessment.number;
@@ -211,10 +211,10 @@ window.addEventListener("load", async () => {
     htmlDelModule.innerText = `Delete '${assessment.title}' assessment`;
 
     htmlDelModule.addEventListener("click", async (e) => {
+      e.preventDefault();
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The assessment was not deleted because you did not enter the confirmation text correctly.");
         return;
       }
@@ -252,6 +252,8 @@ window.addEventListener("load", async () => {
               },
               body: JSON.stringify(updatedModule)
             });
+
+            window.location.replace("/");
           } catch (e) {
             console.log(e);
             // TODO
@@ -272,7 +274,7 @@ window.addEventListener("load", async () => {
 
       const title = document.getElementById("title").value;
       const learningOutcomes = document.getElementById("learningOutcomes").value;
-      const weight = parseFloat(document.getElementById("weight").value);
+      const weight = parseFloat(document.getElementById("weight").value) / 100;
       const number = parseInt(document.getElementById("number").value);
       const volume = parseInt(document.getElementById("volume").value);
 

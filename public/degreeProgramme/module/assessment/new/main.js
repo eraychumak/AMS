@@ -63,7 +63,7 @@ window.addEventListener("load", () => {
 
     const title = document.getElementById("title").value;
     const learningOutcomes = document.getElementById("learningOutcomes").value;
-    const weight = parseFloat(document.getElementById("weight").value);
+    const weight = parseFloat(document.getElementById("weight").value) / 100;
     const number = parseInt(document.getElementById("number").value);
     const volume = parseInt(document.getElementById("volume").value);
 
