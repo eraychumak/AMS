@@ -239,7 +239,7 @@ window.addEventListener("load", async () => {
         academicYearID,
         roomID,
         academicID,
-        moduleID
+        moduleID: parseInt(moduleID)
       };
 
       try {
@@ -262,10 +262,10 @@ window.addEventListener("load", async () => {
     htmlDelTimeslot.innerText = `Delete '${timeslot.day} between ${timeslot.timeStart} and ${timeslot.timeEnd}' timeslot`;
 
     htmlDelTimeslot.addEventListener("click", async (e) => {
+      e.preventDefault();
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
-        e.preventDefault();
         alert("The timeslot was not deleted because you did not enter the confirmation text correctly.");
         return;
       }

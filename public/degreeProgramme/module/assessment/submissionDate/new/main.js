@@ -116,7 +116,7 @@ window.addEventListener("load", () => {
     const deadline = new Date(document.getElementById("deadline").value).toISOString();
     const htmlAcademicYearsList = document.getElementById("academicYearsList");
 
-    const academicYearID = htmlAcademicYearsList.options[htmlAcademicYearsList.options.selectedIndex].value;;
+    const academicYearID = parseInt(htmlAcademicYearsList.options[htmlAcademicYearsList.options.selectedIndex].value);
 
     const newSubmissionDate = {
       name,
