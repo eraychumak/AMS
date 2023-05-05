@@ -1,3 +1,10 @@
+import { Academic } from "../../../libs/Academic.js";
+import { AcademicYear } from "../../../libs/AcademicYear.js";
+import { DegreeProgramme } from "../../../libs/DegreeProgramme.js";
+import { Mod } from "../../../libs/Module.js";
+import { Room } from "../../../libs/Room.js";
+import { TimeSlot } from "../../../libs/TimeSlot.js";
+
 const params = new URLSearchParams(window.location.search);
 
 const timeslotID = params.get("id");
@@ -10,13 +17,7 @@ if (timeslotID === null || moduleID === null || degreeProgrammeID === null) {
 
 async function updateBreadCrumbs() {
   try {
-    const reqDegreeProgramme = await fetch(`/api/degreeProgrammes?id=${degreeProgrammeID}`);
-
-    if (reqDegreeProgramme.status !== 200) {
-      return;
-    }
-
-    const degreeProgramme = (await reqDegreeProgramme.json())[0];
+    const degreeProgramme = await DegreeProgramme.get(degreeProgrammeID);
 
     if (!degreeProgramme) {
       window.location.replace("/");
@@ -27,18 +28,11 @@ async function updateBreadCrumbs() {
     htmlA.href = `../../?id=${degreeProgrammeID}`;
     htmlA.innerText = degreeProgramme.name;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 
   try {
-    const reqModule = await fetch(`/api/modules?id=${moduleID}`);
-
-    if (reqModule.status !== 200) {
-      return;
-    }
-
-    const mod = (await reqModule.json())[0];
+    const mod = await Mod.get(moduleID);
 
     if (!mod) {
       window.location.replace("/");
@@ -49,22 +43,14 @@ async function updateBreadCrumbs() {
     htmlA.href = `../?id=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`;
     htmlA.innerText = mod.name;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 }
 
-async function fetchAcademicYears(currentAcademicYearID) {
-  const htmlAcademicYearsList = document.getElementById("academicYearsList");
-
+async function fetchAcademicYears(timeslot) {
   try {
-    const reqAcademicYears = await fetch("/api/academicYears");
-
-    if (reqAcademicYears.status !== 200) {
-      return;
-    }
-
-    const academicYears = await reqAcademicYears.json();
+    const academicYears = await AcademicYear.getAll();
+    const htmlAcademicYearsList = document.getElementById("academicYearsList");
 
     if (academicYears.length === 0) {
       const htmlP = document.createElement("p");
@@ -76,35 +62,18 @@ async function fetchAcademicYears(currentAcademicYearID) {
     }
 
     academicYears.forEach(academicYear => {
-      const htmlOption = document.createElement("option");
-      const htmlTxt = document.createTextNode(academicYear.name);
-
-      if (academicYear.id === currentAcademicYearID) {
-        htmlOption.selected = true;
-      }
-
-      htmlOption.value = academicYear.id;
-      htmlOption.appendChild(htmlTxt);
-
-      htmlAcademicYearsList.appendChild(htmlOption);
+      const option = academicYear.htmlOption(timeslot.academicYearID === academicYear.id);
+      htmlAcademicYearsList.appendChild(option);
     });
   } catch (e) {
-    // TODO
-    console.log(e);
+    alert(e.msg);
   }
 }
 
-async function fetchRooms(currentRoomID) {
-  const htmlRoomsList = document.getElementById("roomsList");
-
+async function fetchRooms(timeslot) {
   try {
-    const reqRooms = await fetch("/api/rooms");
-
-    if (reqRooms.status !== 200) {
-      return;
-    }
-
-    const rooms = await reqRooms.json();
+    const htmlRoomsList = document.getElementById("roomsList");
+    const rooms = await Room.getAll();
 
     if (rooms.length === 0) {
       const htmlP = document.createElement("p");
@@ -116,35 +85,18 @@ async function fetchRooms(currentRoomID) {
     }
 
     rooms.forEach(room => {
-      const htmlOption = document.createElement("option");
-      const htmlTxt = document.createTextNode(room.name);
-
-      if (room.id === currentRoomID) {
-        htmlOption.selected = true;
-      }
-
-      htmlOption.value = room.id;
-      htmlOption.appendChild(htmlTxt);
-
-      htmlRoomsList.appendChild(htmlOption);
+      const option = room.htmlOption(timeslot.roomID === room.id);
+      htmlRoomsList.appendChild(option);
     });
   } catch (e) {
-    // TODO
-    console.log(e);
+    alert(e.msg);
   }
 }
 
-async function fetchAcademics(currentAcademicID) {
-  const htmlAcademicsList = document.getElementById("academicsList");
-
+async function fetchAcademics(timeslot) {
   try {
-    const reqAcademics = await fetch("/api/academics");
-
-    if (reqAcademics.status !== 200) {
-      return;
-    }
-
-    const academics = await reqAcademics.json();
+    const academics = await Academic.getAll();
+    const htmlAcademicsList = document.getElementById("academicsList");
 
     if (academics.length === 0) {
       const htmlP = document.createElement("p");
@@ -156,63 +108,46 @@ async function fetchAcademics(currentAcademicID) {
     }
 
     academics.forEach(academic => {
-      const htmlOption = document.createElement("option");
-      const htmlTxt = document.createTextNode(academic.fullName);
-
-      if (academic.id === currentAcademicID) {
-        htmlOption.selected = true;
-      }
-
-      htmlOption.value = academic.id;
-      htmlOption.appendChild(htmlTxt);
-
-      htmlAcademicsList.appendChild(htmlOption);
+      const option = academic.htmlOption(timeslot.academicID === academic.id);
+      htmlAcademicsList.appendChild(option);
     });
   } catch (e) {
-    // TODO
-    console.log(e);
+    alert(e.msg);
   }
 }
+
 
 window.addEventListener("load", async () => {
   updateBreadCrumbs();
 
   try {
-    const req = await fetch(`/api/timeslots?id=${timeslotID}`);
-
-    if (req.status !== 200) {
-      return;
-    }
-
-    const timeslot = (await req.json())[0];
+    const timeslot = await TimeSlot.get(timeslotID);
 
     if (!timeslot) {
       window.replace("/");
       return;
     }
 
-    fetchAcademicYears(timeslot.academicYearID);
-    fetchRooms(timeslot.roomID);
-    fetchAcademics(timeslot.academicID);
+    console.log(timeslot);
 
-    const htmlNameElements = document.getElementsByClassName("useTimeslotName");
+    fetchAcademicYears(timeslot);
+    fetchRooms(timeslot);
+    fetchAcademics(timeslot);
 
-    document.title = `AMS - ${timeslot.day} between ${timeslot.timeStart} and ${timeslot.timeEnd}`;
+    const name = `${timeslot.day} between ${timeslot.timeStart} and ${timeslot.timeEnd}`;
 
-    // selects all classes that want to show full name.
-    for (const htmlNameElement of htmlNameElements) {
-      htmlNameElement.textContent = `${timeslot.day} between ${timeslot.timeStart} and ${timeslot.timeEnd}`;
-    }
+    document.title = `AMS - ${name}`;
 
-    const timeStart = document.getElementById("timeStart");
-    timeStart.value = timeslot.timeStart;
-
-    const timeEnd = document.getElementById("timeEnd");
-    timeEnd.value = timeslot.timeEnd;
+    updateHTMLHooks("useTimeslotName", name);
+    updateHTMLHooks("useTimeslotTimeStart", timeslot.timeStart);
+    updateHTMLHooks("useTimeslotTimeEnd", timeslot.timeEnd);
 
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const htmlDaysList = document.getElementById("daysList");
     htmlDaysList.options.selectedIndex = days.indexOf(timeslot.day);
+
+    // ? UPDATE TIMESLOT LOGIC - START
+    const formUpdateTimeslot = document.getElementById("formUpdateTimeslot");
 
     formUpdateTimeslot.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -232,37 +167,27 @@ window.addEventListener("load", async () => {
       const htmlAcademicsList = document.getElementById("academicsList");
       const academicID = parseInt(htmlAcademicsList.options[htmlAcademicsList.options.selectedIndex].value);
 
-      const updatedTimeslot = {
-        timeStart,
-        timeEnd,
-        day,
-        academicYearID,
-        roomID,
-        academicID,
-        moduleID: parseInt(moduleID)
-      };
-
       try {
-        await fetch(`/api/timeslots/${timeslot.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(updatedTimeslot)
-        });
+        const statusUpdate = await timeslot.update(
+          day, timeStart, timeEnd, academicYearID, roomID, academicID, parseInt(moduleID)
+        );
 
-        window.location.reload();
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to create new timeslot.");
+        if (statusUpdate) {
+          window.location.reload();
+        }
+      } catch (e) {
+        alert(e.msg);
       }
     });
+    // ? UPDATE TIMESLOT LOGIC - END
 
+    // ? DELETE TIMESLOT LOGIC - START
     const htmlDelTimeslot = document.getElementById("delTimeslot");
     htmlDelTimeslot.innerText = `Delete '${timeslot.day} between ${timeslot.timeStart} and ${timeslot.timeEnd}' timeslot`;
 
     htmlDelTimeslot.addEventListener("click", async (e) => {
       e.preventDefault();
+
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
@@ -271,18 +196,17 @@ window.addEventListener("load", async () => {
       }
 
       try {
-        await fetch(`/api/timeslots/${timeslot.id}`, {
-          method: "DELETE"
-        });
+        const statusDelete = await timeslot.delete();
 
-        window.location.replace(`../?id=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`);
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to delete timeslot.");
+        if (statusDelete) {
+          window.location.replace(`../?id=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`);
+        }
+      } catch (e) {
+        alert(e.msg);
       }
     });
+    // ? DELETE TIMESLOT LOGIC - END
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 });

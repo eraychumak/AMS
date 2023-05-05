@@ -1,3 +1,5 @@
+import { Academic } from "../../libs/Academic.js";
+
 window.addEventListener("load", () => {
   const formNewAcademic = document.getElementById("formNewAcademic");
 
@@ -11,22 +13,14 @@ window.addEventListener("load", () => {
       return;
     }
 
-    const newAcademic = {
-      fullName
-    };
-
     try {
-      await fetch("/api/academics/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newAcademic)
-      });
+      const statusCreate = Academic.create(fullName);
 
-      window.location.replace("/");
+      if (statusCreate) {
+        window.location.replace("/");
+      }
     } catch (e) {
-      alert("Failed to create new academic.");
+      alert(e.msg);
     }
   });
 });

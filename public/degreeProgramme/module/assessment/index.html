@@ -38,6 +38,7 @@
           <section class="formField">
             <label for="learningOutcomes">Learning Outcomes</label>
             <input
+              class="useAssessmentLearningOutcomes"
               name="learningOutcomes"
               id="learningOutcomes"
               autocomplete="off"
@@ -47,6 +48,7 @@
           <section class="formField">
             <label for="weight">Weight (%)</label>
             <input
+              class="useAssessmentWeight"
               name="weight"
               id="weight"
               autocomplete="off"
@@ -56,6 +58,7 @@
           <section class="formField">
             <label for="weight">Number</label>
             <input
+              class="useAssessmentNumber"
               name="number"
               id="number"
               autocomplete="off"
@@ -65,10 +68,11 @@
             <section class="formField">
               <label for="volume">Volume (hours)</label>
               <input
-              name="volume"
-              id="volume"
-              autocomplete="off"
-              required
+                class="useAssessmentVolume"
+                name="volume"
+                id="volume"
+                autocomplete="off"
+                required
               />
             </section>
             <fieldset>
@@ -88,6 +92,6 @@
       <a href="#" class="importantAction" id="delAssessment"></a>
     </main>
     <script src="../../../lib.js" async></script>
-    <script src="./main.js" async></script>
+    <script type="module" src="./main.js" async></script>
   </body>
 </html>

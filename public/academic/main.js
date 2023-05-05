@@ -1,45 +1,32 @@
+import { Academic } from "../libs/Academic.js";
+
 const params = new URLSearchParams(window.location.search);
 
-const academicYearID = params.get("id");
+const academicID = params.get("id");
 
-if (academicYearID === null) {
+if (academicID === null) {
   window.location.replace("/");
 }
 
 window.addEventListener("load", async () => {
   try {
-    const req = await fetch(`/api/academics?id=${academicYearID}`);
-
-    if (req.status !== 200) {
-      return;
-    }
-
-    const academic = (await req.json())[0];
+    const academic = await Academic.get(academicID);
 
     if (!academic) {
       window.location.replace("/");
     }
 
-    const htmlElements = document.getElementsByClassName("useAcademicFullName");
-
     document.title = `AMS - ${academic.fullName}`;
 
-    // selects all classes that want to show full name.
-    for (const htmlElement of htmlElements) {
-      if (htmlElement.tagName === "INPUT") {
-        htmlElement.value = academic.fullName;
-        continue;
-      }
+    updateHTMLHooks("useAcademicFullName", academic.fullName);
 
-      htmlElement.textContent = academic.fullName;
-    }
-
+    // ? DELETE ACADEMIC LOGIC - START
     const htmlDelAcademic = document.getElementById("delAcademic");
     htmlDelAcademic.innerText = `Delete '${academic.fullName}' academic`;
 
     htmlDelAcademic.addEventListener("click", async (e) => {
       e.preventDefault();
-      const msg = window.prompt("Type 'Delete' to confirm.");
+      const msg = window.prompt("The following will also be deleted with the academic:\n - Timeslots created for a module that use this academic\n\nType 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
         alert("The academic was not deleted because you did not enter the confirmation text correctly.");
@@ -47,17 +34,18 @@ window.addEventListener("load", async () => {
       }
 
       try {
-        await fetch(`/api/academics/${academic.id}`, {
-          method: "DELETE"
-        });
+        const deleteStatus = await academic.delete();
 
-        window.location.replace("/");
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to delete academic.");
+        if (deleteStatus) {
+          window.location.replace("/");
+        }
+      } catch (e) {
+        alert(e.msg);
       }
     });
+    // ? DELETE ACADEMIC LOGIC - END
 
+    // ? UPDATE ACADEMIC LOGIC - START
     const formUpdateAcademic = document.getElementById("formUpdateAcademic");
 
     formUpdateAcademic.addEventListener("submit", async (e) => {
@@ -70,27 +58,18 @@ window.addEventListener("load", async () => {
         return;
       }
 
-      const updatedAcademic = {
-        fullName
-      };
-
       try {
-        await fetch(`/api/academics/${academic.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(updatedAcademic)
-        });
+        const statusUpdate = await academic.update(fullName);
 
-        window.location.reload();
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to update academic.");
+        if (statusUpdate) {
+          window.location.reload();
+        }
+      } catch (e) {
+        alert(e.msg);
       }
     });
+    // ? UPDATE ACADEMIC LOGIC - END
   } catch (e) {
-    console.log(e);
+    alert(e.msg);
   }
-
 });

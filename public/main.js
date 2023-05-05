@@ -1,3 +1,8 @@
+import { Academic } from "./libs/Academic.js";
+import { AcademicYear } from "./libs/AcademicYear.js";
+import { DegreeProgramme } from "./libs/DegreeProgramme.js";
+import { Room } from "./libs/Room.js";
+
 function htmlTxt(label) {
   const p = document.createElement("p");
   const txt = document.createTextNode(label);
@@ -6,39 +11,21 @@ function htmlTxt(label) {
   return p;
 }
 
-function htmlSecondaryBtn(label, href = "#") {
-  const a = document.createElement("a");
-  const txt = document.createTextNode(label);
-
-  a.appendChild(txt);
-  a.classList.add("secondaryBtn");
-  a.href = href;
-
-  return a;
-}
-
 async function fetchAcademicYears() {
   const academicYearsList = document.getElementById("academicYearsList");
   academicYearsList.innerHTML = "";
 
   try {
-    const req = await fetch("/api/academicYears");
+    const academicYears = await AcademicYear.getAll();
 
-    if (req.status !== 200) {
-      return;
-    }
-
-    const payload = await req.json();
-
-    for (let x = 0; x < payload.length; x++) {
-      const academicYear = payload[x];
+    for (let x = 0; x < academicYears.length; x++) {
+      const academicYear = academicYears[x];
       const htmlAcademicYear = htmlSecondaryBtn(academicYear.name, `/academicYear?id=${academicYear.id}`);
 
       academicYearsList.appendChild(htmlAcademicYear);
     }
   } catch (e) {
-    const errText = htmlTxt("Something went wrong.");
-    academicYearsList.appendChild(errText);
+    alert(e.msg);
   }
 }
 
@@ -47,16 +34,10 @@ async function fetchDegreeProgreammes() {
   degreeProgrammesList.innerHTML = "";
 
   try {
-    const req = await fetch("/api/degreeProgrammes");
+    const degreeProgrammes = await DegreeProgramme.getAll();
 
-    if (req.status !== 200) {
-      return;
-    }
-
-    const payload = await req.json();
-
-    for (let x = 0; x < payload.length; x++) {
-      const degreeProgramme = payload[x];
+    for (let x = 0; x < degreeProgrammes.length; x++) {
+      const degreeProgramme = degreeProgrammes[x];
       const htmlDegreeProgramme = htmlSecondaryBtn(degreeProgramme.name, `/degreeProgramme?id=${degreeProgramme.id}`);
 
       degreeProgrammesList.appendChild(htmlDegreeProgramme);
@@ -72,16 +53,10 @@ async function fetchAcademics() {
   academicsList.innerHTML = "";
 
   try {
-    const req = await fetch("/api/academics");
+    const academics = await Academic.getAll();
 
-    if (req.status !== 200) {
-      return;
-    }
-
-    const payload = await req.json();
-
-    for (let x = 0; x < payload.length; x++) {
-      const academic = payload[x];
+    for (let x = 0; x < academics.length; x++) {
+      const academic = academics[x];
       const htmlAcademic = htmlSecondaryBtn(academic.fullName, `/academic?id=${academic.id}`);
 
       academicsList.appendChild(htmlAcademic);
@@ -97,16 +72,10 @@ async function fetchRooms() {
   roomsList.innerHTML = "";
 
   try {
-    const req = await fetch("/api/rooms");
+    const rooms = await Room.getAll();
 
-    if (req.status !== 200) {
-      return;
-    }
-
-    const payload = await req.json();
-
-    for (let x = 0; x < payload.length; x++) {
-      const room = payload[x];
+    for (let x = 0; x < rooms.length; x++) {
+      const room = rooms[x];
       const htmlRoom = htmlSecondaryBtn(room.name, `/room?id=${room.id}`);
 
       roomsList.appendChild(htmlRoom);

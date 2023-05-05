@@ -1,3 +1,7 @@
+import { ExitAward } from "../libs/ExitAward.js";
+import { DegreeProgramme } from "/libs/DegreeProgramme.js";
+import { Mod } from "../libs/Module.js";
+
 const params = new URLSearchParams(window.location.search);
 
 const degreeProgrammeID = params.get("id");
@@ -6,18 +10,17 @@ if (degreeProgrammeID === null) {
   window.location.replace("/");
 }
 
-async function fetchExitAwards(degreeProgrammeExitAwardIDs) {
+/**
+ * Fetch all exit awards and add a marked checkbox and navigational button for the ones that the degree programme owns.
+ * @param {DegreeProgramme} degreeProgramme - the degree programme.
+ * @returns {Promise<void>}
+ */
+async function fetchExitAwards(degreeProgramme) {
   const htmlExitAwards = document.getElementById("exitAwardsList");
   const htmlDegreeProgrammeExitAwardsList = document.getElementById("degreeProgrammeExitAwardsList");
 
   try {
-    const reqExitAwards = await fetch("/api/exitAwards");
-
-    if (reqExitAwards.status !== 200) {
-      return;
-    }
-
-    const exitAwards = await reqExitAwards.json();
+    const exitAwards = await ExitAward.getAll();
 
     if (exitAwards.length === 0) {
       const htmlP = document.createElement("p");
@@ -29,7 +32,7 @@ async function fetchExitAwards(degreeProgrammeExitAwardIDs) {
     }
 
     exitAwards.forEach(exitAward => {
-      if (degreeProgrammeExitAwardIDs.includes(exitAward.id)) {
+      if (degreeProgramme.exitAwardIDs.includes(exitAward.id)) {
         htmlDegreeProgrammeExitAwardsList.appendChild(
           htmlSecondaryBtn(
             exitAward.name,
@@ -38,29 +41,48 @@ async function fetchExitAwards(degreeProgrammeExitAwardIDs) {
         )
       }
 
-      const htmlDiv = document.createElement("div");
-      const htmlInput = document.createElement("input");
-      const htmlLabel = document.createElement("label");
-      const htmlLabelText = document.createTextNode(exitAward.name);
+      const checked = degreeProgramme.exitAwardIDs.includes(exitAward.id);
+      const container = exitAward.htmlCheckbox(checked);
 
-      htmlDiv.classList.add("checkboxField");
-
-      htmlInput.type = "checkbox";
-      htmlInput.id = exitAward.id;
-      htmlInput.name = exitAward.id;
-      htmlInput.checked = degreeProgrammeExitAwardIDs.includes(exitAward.id);
-
-      htmlLabel.htmlFor = exitAward.id;
-      htmlLabel.appendChild(htmlLabelText);
-
-      htmlDiv.appendChild(htmlInput);
-      htmlDiv.appendChild(htmlLabel);
-
-      htmlExitAwards.appendChild(htmlDiv);
+      htmlExitAwards.appendChild(container);
     });
   } catch (e) {
-    // TODO
-    console.log(e);
+    alert(e.msg);
+  }
+}
+
+/**
+ * Fetch all modules and add a marked checkbox and navigational button for the ones that the degree programme owns.
+ * @param {DegreeProgramme} degreeProgramme - the degree programme.
+ * @returns {Promise<void>}
+ */
+async function fetchModules(degreeProgramme) {
+  const htmlModulesList = document.getElementById("modulesList");
+  const htmlDegreeProgrammeModulesList = document.getElementById("degreeProgrammeModulesList");
+
+  try {
+    const modules = await Mod.getAll();
+
+    if (modules.length === 0) {
+      const htmlP = document.createElement("p");
+      const htmlTxt = document.createTextNode("Empty");
+
+      htmlP.appendChild(htmlTxt);
+      htmlModulesList.appendChild(htmlP);
+      return;
+    }
+
+    modules.forEach(mod => {
+      if (degreeProgramme.moduleIDs.includes(mod.id)) {
+        const html = htmlSecondaryBtn(mod.name, `./module?id=${mod.id}&degreeProgrammeID=${degreeProgrammeID}`);
+        htmlDegreeProgrammeModulesList.appendChild(html);
+      }
+
+      const container = mod.htmlCheckbox(degreeProgramme.moduleIDs.includes(mod.id));
+      htmlModulesList.append(container);
+    });
+  } catch (e) {
+    alert(e.msg);
   }
 }
 
@@ -72,35 +94,59 @@ window.addEventListener("load", async () => {
   htmlCreateNewExitAward.href = `./exitAward/new?degreeProgrammeID=${degreeProgrammeID}`;
 
   try {
-    const reqDegreeProgramme = await fetch(`/api/degreeProgrammes?id=${degreeProgrammeID}`);
-
-    if (reqDegreeProgramme.status !== 200) {
-      return;
-    }
-
-    const degreeProgramme = (await reqDegreeProgramme.json())[0];
-
-    if (!degreeProgramme) {
-      window.location.replace("/");
-    }
-
-    const htmlNameElements = document.getElementsByClassName("useDegreeProgrammeName");
-
+    // ? FETCH DEGREE PROGRAMME DETAILS - START
+    const degreeProgramme = await DegreeProgramme.get(degreeProgrammeID);
     document.title = `AMS - ${degreeProgramme.name}`;
 
-    // selects all classes that want to show full name.
-    for (const htmlNameElement of htmlNameElements) {
-      if (htmlNameElement.tagName === "INPUT") {
-        htmlNameElement.value = degreeProgramme.name;
-        continue;
+    updateHTMLHooks("useDegreeProgrammeName", degreeProgramme.name);
+    updateHTMLHooks("useDegreeProgrammeLearningOutcomes", degreeProgramme.learningOutcomes);
+
+    fetchModules(degreeProgramme);
+    fetchExitAwards(degreeProgramme);
+    // ? FETCH DEGREE PROGRAMME DETAILS - END
+
+    // ? UPDATE DEGREE PROGRAMME LOGIC - START
+    const formUpdateDegreeProgramme = document.getElementById("formUpdateDegreeProgramme");
+
+    formUpdateDegreeProgramme.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const learningOutcomes = document.getElementById("learningOutcomes").value;
+
+      const selectedModules = document.querySelectorAll("#modulesList input[type=checkbox]:checked");
+      const moduleIDs = [];
+
+      selectedModules.forEach(mod => {
+        if (mod.checked) {
+          const modID = mod.id.split("-")[1];
+          moduleIDs.push(parseInt(modID));
+        }
+      });
+
+      const selectedExitAwards = document.querySelectorAll("#exitAwardsList input[type=checkbox]:checked");
+      const exitAwardIDs = [];
+
+      selectedExitAwards.forEach(exitAward => {
+        if (exitAward.checked) {
+          const exitAwardID = exitAward.id.split("-")[1];
+          exitAwardIDs.push(parseInt(exitAwardID));
+        }
+      });
+
+      try {
+        const updateStatus = await degreeProgramme.update(name, learningOutcomes, moduleIDs, exitAwardIDs);
+
+        if (updateStatus) {
+          window.location.reload();
+        }
+      } catch (e) {
+        alert(e.msg);
       }
+    });
+    // ? UPDATE DEGREE PROGRAMME LOGIC - END
 
-      htmlNameElement.textContent = degreeProgramme.name;
-    }
-
-    const htmlLearningOutcomes = document.getElementById("learningOutcomes");
-    htmlLearningOutcomes.value = degreeProgramme.learningOutcomes;
-
+    // ? DELETE DEGREE PROGRAMME LOGIC - START
     const htmlDelDegreeProgramme = document.getElementById("delDegreeProgramme");
     htmlDelDegreeProgramme.innerText = `Delete '${degreeProgramme.name}' degree programme`;
 
@@ -115,121 +161,18 @@ window.addEventListener("load", async () => {
       }
 
       try {
-        await fetch(`/api/degreeProgrammes/${degreeProgramme.id}`, {
-          method: "DELETE"
-        });
+        const delStatus = await degreeProgramme.delete();
 
-        window.location.replace("/");
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to delete degree programme.");
+        if (delStatus) {
+          window.location.replace("/");
+        }
+      } catch (e) {
+        alert(e.msg);
       }
     });
-
-    const htmlModulesList = document.getElementById("modulesList");
-    const htmlDegreeProgrammeModulesList = document.getElementById("degreeProgrammeModulesList");
-
-    try {
-      const reqModules = await fetch("/api/modules");
-
-      if (reqModules.status !== 200) {
-        return;
-      }
-
-      const modules = await reqModules.json();
-
-      if (modules.length === 0) {
-        const htmlP = document.createElement("p");
-        const htmlTxt = document.createTextNode("Empty");
-
-        htmlP.appendChild(htmlTxt);
-        htmlModulesList.appendChild(htmlP);
-        return;
-      }
-
-      modules.forEach(mod => {
-        const htmlDiv = document.createElement("div");
-        const htmlInput = document.createElement("input");
-        const htmlLabel = document.createElement("label");
-        const htmlLabelText = document.createTextNode(mod.name);
-
-        htmlDiv.classList.add("checkboxField");
-
-        htmlInput.type = "checkbox";
-        htmlInput.id = mod.id;
-        htmlInput.name = mod.id;
-        htmlInput.checked = degreeProgramme.moduleIDs.includes(mod.id);
-
-        if (degreeProgramme.moduleIDs.includes(mod.id)) {
-          const html = htmlSecondaryBtn(mod.name, `./module?id=${mod.id}&degreeProgrammeID=${degreeProgrammeID}`);
-          htmlDegreeProgrammeModulesList.appendChild(html);
-        }
-
-        htmlLabel.htmlFor = mod.id;
-        htmlLabel.appendChild(htmlLabelText);
-
-        htmlDiv.appendChild(htmlInput);
-        htmlDiv.appendChild(htmlLabel);
-
-        htmlModulesList.appendChild(htmlDiv);
-      });
-    } catch (e) {
-      // TODO
-      console.log(e);
-    }
-
-    fetchExitAwards(degreeProgramme.exitAwardIDs);
-
-    const formUpdateDegreeProgramme = document.getElementById("formUpdateDegreeProgramme");
-
-    formUpdateDegreeProgramme.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById("name").value;
-      const learningOutcomes = document.getElementById("learningOutcomes").value;
-
-      const selectedModules = document.querySelectorAll("#modulesList input[type=checkbox]:checked");
-      const moduleIDs = [];
-
-      selectedModules.forEach(mod => {
-        if (mod.checked) {
-          moduleIDs.push(parseInt(mod.id));
-        }
-      });
-
-      const selectedExitAwards = document.querySelectorAll("#exitAwardsList input[type=checkbox]:checked");
-      const exitAwardIDs = [];
-
-      selectedExitAwards.forEach(exitAward => {
-        if (mod.checked) {
-          exitAwardIDs.push(parseInt(exitAward.id));
-        }
-      });
-
-      const updatedDegreeProgramme = {
-        name,
-        learningOutcomes,
-        moduleIDs,
-        exitAwardIDs
-      };
-
-      try {
-        await fetch(`/api/degreeProgrammes/${degreeProgrammeID}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(updatedDegreeProgramme)
-        });
-
-        window.location.reload();
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to update degree programme.");
-      }
-    });
+    // ? DELETE DEGREE PROGRAMME LOGIC - END
   } catch (e) {
-    // TODO
-    console.log(e);
+    alert(e.msg);
+    window.location.replace("/");
   }
 });

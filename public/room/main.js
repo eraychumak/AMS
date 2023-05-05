@@ -1,3 +1,5 @@
+import { Room } from "../libs/Room.js";
+
 const params = new URLSearchParams(window.location.search);
 
 const roomID = params.get("id");
@@ -8,41 +10,24 @@ if (roomID === null) {
 
 window.addEventListener("load", async () => {
   try {
-    const req = await fetch(`/api/rooms?id=${roomID}`);
-
-    if (req.status !== 200) {
-      return;
-    }
-
-    const room = (await req.json())[0];
+    const room = await Room.get(roomID);
 
     if (!room) {
       window.location.replace("/");
     }
 
-    const htmlNameElements = document.getElementsByClassName("useRoomName");
-
     document.title = `AMS - ${room.name}`;
 
-    // selects all classes that want to show full name.
-    for (const htmlNameElement of htmlNameElements) {
-      if (htmlNameElement.tagName === "INPUT") {
-        htmlNameElement.value = room.name;
-        continue;
-      }
+    updateHTMLHooks("useRoomName", room.name);
+    updateHTMLHooks("useRoomLocation", room.location);
 
-      htmlNameElement.textContent = room.name;
-    }
-
-    const htmlLocation = document.getElementById("location");
-    htmlLocation.value = room.location;
-
+    // ? DELETE ROOM LOGIC - START
     const htmlDelRoom = document.getElementById("delRoom");
     htmlDelRoom.innerText = `Delete '${room.name}' room`;
 
     htmlDelRoom.addEventListener("click", async (e) => {
       e.preventDefault();
-      const msg = window.prompt("Type 'Delete' to confirm.");
+      const msg = window.prompt("The following will also be deleted with the room:\n - Timeslots created for a module that use this room\n\nType 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
         alert("The room was not deleted because you did not enter the confirmation text correctly.");
@@ -50,17 +35,18 @@ window.addEventListener("load", async () => {
       }
 
       try {
-        await fetch(`/api/rooms/${room.id}`, {
-          method: "DELETE"
-        });
+        const deleteStatus = await room.delete();
 
-        window.location.replace("/");
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to delete room.");
+        if (deleteStatus) {
+          window.location.replace("/");
+        }
+      } catch (e) {
+        alert(e.msg);
       }
     });
+    // ? DELETE ROOM LOGIC - END
 
+    // ? UPDATE ROOM LOGIC - START
     const formUpdateRoom = document.getElementById("formUpdateRoom");
 
     formUpdateRoom.addEventListener("submit", async (e) => {
@@ -75,20 +61,17 @@ window.addEventListener("load", async () => {
       };
 
       try {
-        await fetch(`/api/rooms/${room.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(updatedRoom)
-        });
+        const statusUpdate = await room.update(name, location);
 
-        window.location.reload();
+        if (statusUpdate) {
+          window.location.reload();
+        }
       } catch (e) {
-        alert("Failed to create new room.");
+        alert(e.msg);
       }
+      // ? UPDATE ROOM LOGIC - END
     });
   } catch (e) {
-    console.log(e);
+    alert(e.msg);
   }
 });

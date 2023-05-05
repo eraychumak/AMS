@@ -37,6 +37,7 @@
           <section class="formField">
             <label for="credits">Credits</label>
             <input
+              class="useModuleCredits"
               name="credits"
               id="credits"
               autocomplete="off"
@@ -46,6 +47,7 @@
           <section class="formField">
             <label for="hours">Hours</label>
             <input
+              class="useModuleHours"
               name="hours"
               id="hours"
               autocomplete="off"
@@ -55,6 +57,7 @@
           <section class="formField">
             <label for="learningOutcomes">Learning Outcomes</label>
             <input
+              class="useModuleLearningOutcomes"
               name="learningOutcomes"
               id="learningOutcomes"
               autocomplete="off"
@@ -62,7 +65,7 @@
             />
           </section>
           <fieldset>
-            <legend>Select module assessments (<span id="totalAssessmentWeight"></span>)</legend>
+            <legend>Select module assessments (<span class="useTotalAssessmentsWeight"></span>)</legend>
             <section class="checkboxes" id="assessmentsList"></section>
           </fieldset>
           <input type="submit" value="Update module details"/>
@@ -85,6 +88,6 @@
       <a href="#" class="importantAction" id="delModule"></a>
     </main>
     <script src="../../lib.js" async></script>
-    <script src="./main.js" async></script>
+    <script type="module" src="./main.js" async></script>
   </body>
 </html>

@@ -1,3 +1,9 @@
+import { AcademicYear } from "../../../../libs/AcademicYear.js";
+import { Assessment } from "../../../../libs/Assessment.js";
+import { DegreeProgramme } from "../../../../libs/DegreeProgramme.js";
+import { Mod } from "../../../../libs/Module.js";
+import { SubmissionDate } from "../../../../libs/SubmissionDate.js";
+
 const params = new URLSearchParams(window.location.search);
 
 const submissionDateID = params.get("id");
@@ -11,13 +17,7 @@ if (submissionDateID === null || assessmentID === null || moduleID === null || d
 
 async function updateBreadCrumbs() {
   try {
-    const reqDegreeProgramme = await fetch(`/api/degreeProgrammes?id=${degreeProgrammeID}`);
-
-    if (reqDegreeProgramme.status !== 200) {
-      return;
-    }
-
-    const degreeProgramme = (await reqDegreeProgramme.json())[0];
+    const degreeProgramme = await DegreeProgramme.get(degreeProgrammeID);
 
     if (!degreeProgramme) {
       window.location.replace("/");
@@ -28,18 +28,11 @@ async function updateBreadCrumbs() {
     htmlA.href = `../../../?id=${degreeProgrammeID}`;
     htmlA.innerText = degreeProgramme.name;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 
   try {
-    const reqModule = await fetch(`/api/modules?id=${moduleID}`);
-
-    if (reqModule.status !== 200) {
-      return;
-    }
-
-    const mod = (await reqModule.json())[0];
+    const mod = await Mod.get(moduleID);
 
     if (!mod) {
       window.location.replace("/");
@@ -50,18 +43,11 @@ async function updateBreadCrumbs() {
     htmlA.href = `../../?id=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`;
     htmlA.innerText = mod.name;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 
   try {
-    const reqAssessment = await fetch(`/api/assessments?id=${assessmentID}`);
-
-    if (reqAssessment.status !== 200) {
-      return;
-    }
-
-    const assessment = (await reqAssessment.json())[0];
+    const assessment = await Assessment.get(assessmentID);
 
     if (!assessment) {
       window.location.replace("/");
@@ -72,39 +58,22 @@ async function updateBreadCrumbs() {
     htmlA.href = `../?id=${assessmentID}&moduleID=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`;
     htmlA.innerText = assessment.title;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 }
 
-async function fetchAllAcademicYears(currentAcademicYearID) {
+async function fetchAllAcademicYears(submissionDate) {
   try {
-    const req = await fetch("/api/academicYears");
-
-    if (req.status !== 200) {
-      return;
-    }
-
-    const academicYears = await req.json();
+    const academicYears = await AcademicYear.getAll();
 
     const htmlAcademicYearsList = document.getElementById("academicYearsList");
 
     academicYears.forEach(academicYear => {
-      const htmlOption = document.createElement("option");
-      const htmlTxt = document.createTextNode(academicYear.name);
-
-      if (academicYear.id === currentAcademicYearID) {
-        htmlOption.selected = true;
-      }
-
-      htmlOption.value = academicYear.id;
-      htmlOption.appendChild(htmlTxt);
-
-      htmlAcademicYearsList.appendChild(htmlOption);
+      const option = academicYear.htmlOption(academicYear.id === submissionDate.academicYearID);
+      htmlAcademicYearsList.appendChild(option);
     });
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 }
 
@@ -112,42 +81,26 @@ window.addEventListener("load", async () => {
   updateBreadCrumbs();
 
   try {
-    const req = await fetch(`/api/submissionDates?id=${submissionDateID}`);
-
-    if (req.status !== 200) {
-      return;
-    }
-
-    const submissionDate = (await req.json())[0];
+    const submissionDate = await SubmissionDate.get(submissionDateID);
 
     if (!submissionDate) {
       window.location.replace("/");
     }
 
-    fetchAllAcademicYears(submissionDate.academicYearID);
-
-    const htmlNameElements = document.getElementsByClassName("useSubmissionDateName");
-
     document.title = `AMS - ${submissionDate.name}`;
 
-    // selects all classes that want to show full name.
-    for (const htmlNameElement of htmlNameElements) {
-      if (htmlNameElement.tagName === "INPUT") {
-        htmlNameElement.value = submissionDate.name;
-        continue;
-      }
+    fetchAllAcademicYears(submissionDate);
 
-      htmlNameElement.textContent = submissionDate.name;
-    }
+    updateHTMLHooks("useSubmissionDateName", submissionDate.name);
+    updateHTMLHooks("useSubmissionDateDeadline", submissionDate.deadline.split("T")[0]);
 
-    const htmlDeadline = document.getElementById("deadline");
-    htmlDeadline.value = submissionDate.deadline.split("T")[0];
-
+    // ? DELETE SUBMISSION DATE LOGIC - START
     const htmlDelSubmissionDate = document.getElementById("delSubmissionDate");
     htmlDelSubmissionDate.innerText = `Delete '${submissionDate.name}' submissionDate`;
 
     htmlDelSubmissionDate.addEventListener("click", async (e) => {
       e.preventDefault();
+
       const msg = window.prompt("Type 'Delete' to confirm.");
 
       if (msg.toLocaleLowerCase() !== "delete") {
@@ -156,85 +109,41 @@ window.addEventListener("load", async () => {
       }
 
       try {
-        await fetch(`/api/submissionDates/${submissionDate.id}`, {
-          method: "DELETE"
-        });
+        const delStatus = await submissionDate.delete();
 
-        const reqAssessments = await fetch("/api/assessments");
-
-        if (reqAssessments.status !== 200) {
-          return;
+        if (delStatus) {
+          window.location.replace(`../?id=${assessmentID}&moduleID=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`);
         }
-
-        const assessments = await reqAssessments.json();
-
-        assessments.forEach(async (assessment) => {
-          if (!assessment.submissionDateIDs.includes(submissionDate.id)) {
-            return;
-          }
-
-          const updatedSubmissionDateIDs = assessment.submissionDateIDs.filter(subDateID => submissionDate.id !== subDateID);
-
-          const updatedAssessment = {
-            ...assessment,
-            submissionDateIDs: updatedSubmissionDateIDs
-          };
-
-          try {
-            await fetch(`/api/assessments/${assessment.id}`, {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(updatedAssessment)
-            });
-          } catch (e) {
-            console.log(e);
-            // TODO
-          }
-        });
-
-        window.location.replace(`../?id=${assessmentID}&moduleID=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`);
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to delete assessment.");
+      } catch (e) {
+        alert(e.msg);
       }
     });
-  } catch (e) {
-    console.log(e);
-    // TODO
-  }
+    // ? DELETE SUBMISSION DATE LOGIC - END
 
-  const formUpdateSubmissionDate = document.getElementById("formUpdateSubmissionDate");
+    // ? UPDATE SUBMISSION DATE LOGIC - START
+    const formUpdateSubmissionDate = document.getElementById("formUpdateSubmissionDate");
 
-  formUpdateSubmissionDate.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const deadline = new Date(document.getElementById("deadline").value).toISOString();
-    const htmlAcademicYearsList = document.getElementById("academicYearsList");
-
-    const academicYearID = parseInt(htmlAcademicYearsList.options[htmlAcademicYearsList.options.selectedIndex].value);
-
-    const updatedSubmissionDate = {
-      name,
-      deadline,
-      academicYearID
-    };
-
-    try {
-      await fetch(`/api/submissionDates/${submissionDateID}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedSubmissionDate)
-      });
-
-      window.location.replace(`../?id=${assessmentID}&moduleID=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`);
-    } catch (err) {
+    formUpdateSubmissionDate.addEventListener("submit", async (e) => {
       e.preventDefault();
-      alert("Failed to create new submission date.");
-    }
-  });
+
+      const name = document.getElementById("name").value;
+      const deadline = new Date(document.getElementById("deadline").value).toISOString();
+      const htmlAcademicYearsList = document.getElementById("academicYearsList");
+
+      const academicYearID = parseInt(htmlAcademicYearsList.options[htmlAcademicYearsList.options.selectedIndex].value);
+
+      try {
+        const updateStatus = await submissionDate.update(name, academicYearID, deadline);
+
+        if (updateStatus) {
+          window.location.reload();
+        }
+      } catch (e) {
+        alert(e.msg);
+      }
+    });
+    // ? UPDATE SUBMISSION DATE - END
+  } catch(e) {
+    alert(e.msg);
+  }
 });
