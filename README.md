@@ -4,6 +4,9 @@ This system is built with vanilla HTML, CSS, and JavaScript without any framewor
 
 This fork is an extension implementation part of coursework two for the CIS2169 - Web Application Development module at Edge Hill University.
 
+## Figma Designs
+URL Preview: https://www.figma.com/file/ShvOkSuVyTt9UMGs0beoSd/AMS
+
 ## Screenshots
 
 ![Dell XPS 15 laptop mock of AMS](./screenshots/desktop.png "Desktop Mockup")
