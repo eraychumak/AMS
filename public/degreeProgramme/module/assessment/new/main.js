@@ -1,3 +1,7 @@
+import { Assessment } from "../../../../libs/Assessment.js";
+import { DegreeProgramme } from "../../../../libs/DegreeProgramme.js";
+import { Mod } from "../../../../libs/Module.js";
+
 const params = new URLSearchParams(window.location.search);
 
 const moduleID = params.get("moduleID");
@@ -9,13 +13,7 @@ if (moduleID === null || degreeProgrammeID === null) {
 
 async function updateBreadCrumbs() {
   try {
-    const reqDegreeProgramme = await fetch(`/api/degreeProgrammes?id=${degreeProgrammeID}`);
-
-    if (reqDegreeProgramme.status !== 200) {
-      return;
-    }
-
-    const degreeProgramme = (await reqDegreeProgramme.json())[0];
+    const degreeProgramme = await DegreeProgramme.get(degreeProgrammeID);
 
     if (!degreeProgramme) {
       window.location.replace("/");
@@ -26,18 +24,11 @@ async function updateBreadCrumbs() {
     htmlA.href = `../../../?id=${degreeProgrammeID}`;
     htmlA.innerText = degreeProgramme.name;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 
   try {
-    const reqModule = await fetch(`/api/modules?id=${moduleID}`);
-
-    if (reqModule.status !== 200) {
-      return;
-    }
-
-    const mod = (await reqModule.json())[0];
+    const mod = await Mod.get(moduleID);
 
     if (!mod) {
       window.location.replace("/");
@@ -48,14 +39,14 @@ async function updateBreadCrumbs() {
     htmlA.href = `../../?id=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`;
     htmlA.innerText = mod.name;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 }
 
 window.addEventListener("load", () => {
   updateBreadCrumbs();
 
+  // ? FORM NEW ASSESSMENT LOGIC - START
   const formNewAssessment = document.getElementById("formNewAssessment");
 
   formNewAssessment.addEventListener("submit", async (e) => {
@@ -67,58 +58,17 @@ window.addEventListener("load", () => {
     const number = parseInt(document.getElementById("number").value);
     const volume = parseInt(document.getElementById("volume").value);
 
-    const newAssessment = {
-      title,
-      learningOutcomes,
-      weight,
-      number,
-      volume,
-      submissionDateIDs: []
-    };
-
     try {
-      const reqPost = await fetch("/api/assessments/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newAssessment)
-      });
+      const statusCreate = await Assessment.create(
+        title, number, learningOutcomes, volume, weight, [], moduleID
+      );
 
-      if (reqPost.status !== 201) {
-        return;
+      if (statusCreate) {
+        window.location.replace(`../../?id=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`);
       }
-
-      const assessment = await reqPost.json();
-
-      const reqModule = await fetch(`/api/modules?id=${moduleID}`)
-
-      if (reqModule.status !== 200) {
-        return;
-      }
-
-      const mod = (await reqModule.json())[0];
-
-      const updatedModule = {
-        ...mod,
-        assessmentIDs: [
-          ...mod.assessmentIDs,
-          assessment.id
-        ]
-      }
-
-      await fetch(`/api/modules/${moduleID}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedModule)
-      });
-
-      window.location.replace(`../../?id=${moduleID}&degreeProgrammeID=${degreeProgrammeID}`);
-    } catch (err) {
-      e.preventDefault();
-      alert("Failed to create new assessment.");
+    } catch(e) {
+      alert(e.msg);
     }
+    // ? FORM NEW ASSESSMENT LOGIC - END
   });
 });

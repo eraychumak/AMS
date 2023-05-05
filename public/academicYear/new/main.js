@@ -1,3 +1,5 @@
+import { AcademicYear } from "../../libs/AcademicYear.js";
+
 window.addEventListener("load", () => {
   const formNewAcademicYear = document.getElementById("formNewAcademicYear");
 
@@ -6,22 +8,14 @@ window.addEventListener("load", () => {
 
     const name = document.getElementById("name").value;
 
-    const newAcademicYear = {
-      name
-    };
-
     try {
-      await fetch("/api/academicYears/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newAcademicYear)
-      });
+      const statusCreate = await AcademicYear.create(name);
 
-      window.location.replace("/");
+      if (statusCreate) {
+        window.location.replace("/");
+      }
     } catch (e) {
-      alert("Failed to create new academic year.");
+      alert(e.msg);
     }
   });
 });

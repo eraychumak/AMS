@@ -15,16 +15,16 @@
     <nav class="breadcrumbs">
       <a href="../">Home</a>
       <p>></p>
-      <p class="useAcademicYear"></p>
+      <p class="useAcademicYearName"></p>
     </nav>
     <main>
-      <h1>Academic Year</br><span class="useAcademicYear"></span></h1>
+      <h1>Academic Year</br><span class="useAcademicYearName"></span></h1>
       <form id="formUpdateAcademicYear">
         <section class="formField">
           <label for="name">Name</label>
           <input
             name="name"
-            class="useAcademicYear"
+            class="useAcademicYearName"
             id="name"
             autocomplete="off"
             required
@@ -34,6 +34,7 @@
       </form>
       <a href="/" class="importantAction" id="delAcademicYear"></a>
     </main>
-    <script src="./main.js" async></script>
+    <script src="../lib.js"></script>
+    <script type="module" src="./main.js" async></script>
   </body>
 </html>

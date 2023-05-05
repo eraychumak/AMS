@@ -1,3 +1,6 @@
+import { DegreeProgramme } from "/libs/DegreeProgramme.js";
+import { ExitAward } from "/libs/ExitAward.js";
+
 const params = new URLSearchParams(window.location.search);
 
 const degreeProgrammeID = params.get("degreeProgrammeID");
@@ -8,13 +11,7 @@ if (degreeProgrammeID === null) {
 
 async function updateBreadCrumbs() {
   try {
-    const reqDegreeProgramme = await fetch(`/api/degreeProgrammes?id=${degreeProgrammeID}`);
-
-    if (reqDegreeProgramme.status !== 200) {
-      return;
-    }
-
-    const degreeProgramme = (await reqDegreeProgramme.json())[0];
+    const degreeProgramme = await DegreeProgramme.get(degreeProgrammeID);
 
     if (!degreeProgramme) {
       window.location.replace("/");
@@ -25,14 +22,14 @@ async function updateBreadCrumbs() {
     htmlA.href = `../../?id=${degreeProgrammeID}`;
     htmlA.innerText = degreeProgramme.name;
   } catch (e) {
-    console.log(e);
-    // TODO
+    alert(e.msg);
   }
 }
 
 window.addEventListener("load", () => {
   updateBreadCrumbs();
 
+  // ? CREATE NEW EXIT AWARD LOGIC - START
   const formNewExitAward = document.getElementById("formNewExitAward");
 
   formNewExitAward.addEventListener("submit", async (e) => {
@@ -40,53 +37,15 @@ window.addEventListener("load", () => {
 
     const name = document.getElementById("name").value;
 
-    const newExitAward = {
-      name
-    };
-
     try {
-      const reqPost = await fetch("/api/exitAwards/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newExitAward)
-      });
+      const createStatus = await ExitAward.create(name, degreeProgrammeID);
 
-      if (reqPost.status !== 201) {
-        return;
+      if (createStatus) {
+        window.location.replace(`../../?id=${degreeProgrammeID}`);
       }
-
-      const exitAward = await reqPost.json();
-
-      const reqDegreeProgramme = await fetch(`/api/degreeProgrammes?id=${degreeProgrammeID}`)
-
-      if (reqDegreeProgramme.status !== 200) {
-        return;
-      }
-
-      const degreeProgramme = (await reqDegreeProgramme.json())[0];
-
-      const updatedDegreeProgramme = {
-        ...degreeProgramme,
-        exitAwardIDs: [
-          ...degreeProgramme.exitAwardIDs,
-          exitAward.id
-        ]
-      }
-
-      await fetch(`/api/degreeProgrammes/${degreeProgrammeID}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedDegreeProgramme)
-      });
-
-      window.location.replace(`../../?id=${degreeProgrammeID}`);
-    } catch (err) {
-      e.preventDefault();
-      alert("Failed to create new exit award.");
+    } catch (e) {
+      alert(e.msg);
     }
   });
+  // ? CREATE NEW EXIT AWARD LOGIC - END
 });

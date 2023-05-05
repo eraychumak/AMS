@@ -1,3 +1,6 @@
+import { DegreeProgramme } from "../../libs/DegreeProgramme.js";
+import { ExitAward } from "../../libs/ExitAward.js";
+
 const params = new URLSearchParams(window.location.search);
 
 const exitAwardID = params.get("id");
@@ -9,24 +12,20 @@ if (exitAwardID === null || degreeProgrammeID === null) {
 
 async function updateBreadCrumbs() {
   try {
-    const reqDegreeProgramme = await fetch(`/api/degreeProgrammes?id=${degreeProgrammeID}`);
-
-    if (reqDegreeProgramme.status !== 200) {
-      return;
-    }
-
-    const degreeProgramme = (await reqDegreeProgramme.json())[0];
+    const degreeProgramme = await DegreeProgramme.get(degreeProgrammeID);
 
     if (!degreeProgramme) {
       window.location.replace("/");
+      return;
     }
 
     const htmlA = document.getElementById("degreeProgrammeBreadCrumb");
 
-    htmlA.href = `../?id=${degreeProgrammeID}`;
+    htmlA.href = `../?id=${degreeProgramme.id}`;
     htmlA.innerText = degreeProgramme.name;
   } catch (e) {
-
+    alert(e.msg);
+    window.location.replace("/");
   }
 }
 
@@ -34,32 +33,16 @@ window.addEventListener("load", async () => {
   updateBreadCrumbs();
 
   try {
-    const reqExitAward = await fetch(`/api/exitAwards?id=${exitAwardID}`);
-
-    if (reqExitAward.status !== 200) {
-      return;
-    }
-
-    const exitAward = (await reqExitAward.json())[0];
+    const exitAward = await ExitAward.get(exitAwardID);
 
     if (!exitAward) {
       window.location.replace("/");
     }
 
-    const htmlNameElements = document.getElementsByClassName("useExitAwardName");
-
     document.title = `AMS - ${exitAward.name}`;
+    updateHTMLHooks("useExitAwardName", exitAward.name);
 
-    // selects all classes that want to show full name.
-    for (const htmlNameElement of htmlNameElements) {
-      if (htmlNameElement.tagName === "INPUT") {
-        htmlNameElement.value = exitAward.name;
-        continue;
-      }
-
-      htmlNameElement.textContent = exitAward.name;
-    }
-
+    // ? DELETE EXIT AWARD LOGIC - START
     const htmlDelExitAward = document.getElementById("delExitAward");
     htmlDelExitAward.innerText = `Delete '${exitAward.name}' exit award`;
 
@@ -73,51 +56,18 @@ window.addEventListener("load", async () => {
       }
 
       try {
-        await fetch(`/api/exitAwards/${exitAward.id}`, {
-          method: "DELETE"
-        });
+        const delStatus = await exitAward.delete();
 
-        const reqDegreeProgrammes = await fetch("/api/degreeProgrammes");
-
-        if (reqDegreeProgrammes.status !== 200) {
-          return;
+        if (delStatus) {
+          window.location.replace(`../?id=${degreeProgrammeID}`);
         }
-
-        const degreeProgrammes = await reqDegreeProgrammes.json();
-
-        degreeProgrammes.forEach(async (degreeProgramme) => {
-          if (!degreeProgramme.exitAwardIDs.includes(exitAward.id)) {
-            return;
-          }
-
-          const updatedExitAwardIDs = degreeProgramme.exitAwardIDs.filter(exitAwardID => exitAward.id !== exitAwardID);
-
-          const updatedDegreeProgramme = {
-            ...degreeProgramme,
-            exitAwardIDs: updatedExitAwardIDs
-          };
-
-          try {
-            await fetch(`/api/degreeProgrammes/${degreeProgramme.id}`, {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(updatedDegreeProgramme)
-            });
-          } catch (e) {
-            console.log(e);
-            // TODO
-          }
-        });
-
-        window.location.replace(`../?id=${degreeProgrammeID}`);
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to delete exit award.");
+      } catch (e) {
+        alert(e.msg);
       }
     });
+    // ? DELETE EXIT AWARD LOGIC - END
 
+    // ? UPDATE EXIT AWARD LOGIC - START
     const formUpdateExitAward = document.getElementById("formUpdateExitAward");
 
     formUpdateExitAward.addEventListener("submit", async (e) => {
@@ -125,27 +75,18 @@ window.addEventListener("load", async () => {
 
       const name = document.getElementById("name").value;
 
-      const updatedExitAward = {
-        name
-      };
-
       try {
-        await fetch(`/api/exitAwards/${exitAwardID}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(updatedExitAward)
-        });
+        const updateStatus = exitAward.update(name);
 
-        window.location.reload();
-      } catch (err) {
-        e.preventDefault();
-        alert("Failed to update exit award.");
+        if (updateStatus) {
+          window.location.reload();
+        }
+      } catch (e) {
+        alert(e.msg);
       }
     });
+    // ? UPDATE EXIT AWARD LOGIC - END
   } catch (e) {
-    // TODO
-    console.log(e);
+    alert(e.msg);
   }
 });
