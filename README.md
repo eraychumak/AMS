@@ -26,4 +26,14 @@ You will need the following before starting:
 1. Git clone the repository.
 2. Go into the project root folder.
 3. Run `yarn` to install dependencies.
-4. Run `yarn run start` to run the server and use the system.
+4. Run `yarn start` to run the server and use the system.
+
+## Documentation
+You can view the documentation for the classes, which provide the interface for interacting with the database.
+
+This is generated using [JSDoc](https://jsdoc.app/).
+
+Generate the documentation:
+1. Run `yarn docs` in the root of the repository.
+
+This will generate a `./docs` directory and you can simply open the `./index.html` file to navigate and view.
