@@ -1,5 +1,4 @@
 import { Mod } from "./Module.js";
-import { SubmissionDate } from "./SubmissionDate.js";
 
 /**
  * Provides an interface for interacting with assessments in the database.
@@ -342,7 +341,7 @@ export class Assessment {
   /**
    * Calculates total assessment weights
    * @param {Array<Assessment>} assessments - list of assessments.
-   * @returns {String} - percentage in text form
+   * @returns {Array} - percentage in text form and float form.
    */
   static calcTotalWeights(assessments) {
     let totalWeight = 0;

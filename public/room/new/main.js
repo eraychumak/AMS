@@ -1,3 +1,5 @@
+import { Room } from "../../libs/Room.js";
+
 window.addEventListener("load", () => {
   const formNewRoom = document.getElementById("formNewRoom");
 
@@ -7,23 +9,14 @@ window.addEventListener("load", () => {
     const name = document.getElementById("name").value;
     const location = document.getElementById("location").value;
 
-    const newRoom = {
-      name,
-      location
-    };
-
     try {
-      await fetch("/api/rooms/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newRoom)
-      });
+      const statusCreate = await Room.create(name, location);
 
-      window.location.replace("/");
+      if (statusCreate) {
+        window.location.replace("/");
+      }
     } catch (e) {
-      alert("Failed to create new room.");
+      alert(e.msg);
     }
   });
 });

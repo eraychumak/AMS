@@ -304,6 +304,11 @@ export class Mod {
     });
   }
 
+  /**
+   * Calculate total weight of assessments in this module.
+   * @param {Array<Assessment>} assessments - list of assessments belonging to this module.
+   * @returns {Array} - percentage in text form and float form.
+   */
   getTotalAssessmentsWeight(assessments) {
     const moduleAssessments = assessments.filter(assessment => this.assessmentIDs.includes(assessment.id));
     return Assessment.calcTotalWeights(moduleAssessments);
