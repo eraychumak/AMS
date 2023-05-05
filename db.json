@@ -156,19 +156,19 @@
     {
       "name": "CW1 - Task 03 - Deadline",
       "deadline": "2023-02-13T00:00:00.000Z",
-      "academicYearID": "1",
+      "academicYearID": 1,
       "id": 7
     },
     {
       "name": "CW1 - Task 04 - Deadline",
       "deadline": "2023-03-07T00:00:00.000Z",
-      "academicYearID": "1",
+      "academicYearID": 1,
       "id": 8
     },
     {
       "name": "CW1 - Task 05 - Deadline",
       "deadline": "2023-03-20T00:00:00.000Z",
-      "academicYearID": "1",
+      "academicYearID": 1,
       "id": 9
     }
   ],
@@ -203,7 +203,7 @@
       "academicYearID": 1,
       "roomID": 1,
       "academicID": 1,
-      "moduleID": "2",
+      "moduleID": 2,
       "id": 2
     },
     {
@@ -213,7 +213,7 @@
       "academicYearID": 3,
       "roomID": 1,
       "academicID": 1,
-      "moduleID": "1",
+      "moduleID": 1,
       "id": 3
     }
   ]
